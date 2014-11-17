@@ -1,6 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('chai-fs'));
+var r = require('ramda');
 
 var path = require('path');
 
@@ -10,13 +11,18 @@ var pathInDocset = function (relativePath) {
 };
 
 describe('Ramda docset', function() {
-	it('contains low-res icon', function() {
-		expect(pathInDocset('icon.png')).to.be.a.file();
-	});
-	it('contains high-res icon', function() {
-		expect(pathInDocset('icon@2x.png')).to.be.a.file();
-	});
-	it('contains Info.plist', function() {
-		expect(pathInDocset('Contents/Info.plist')).to.be.a.file();
-	});
+	var resourcesToCheck = {
+		'low-res icon': 'icon.png',
+		'high-res icon': 'icon@2x.png',
+		'Info.plist': 'Contents/Info.plist',
+		'index page': 'Contents/Resources/Documents/index.html',
+		'API html': 'Contents/Resources/Documents/R.html',
+		index: 'Contents/Resources/docSet.dsidx'
+	};
+	var expectResourceToExist = function (resourceName) {
+		it('contains ' + resourceName, function() {
+			expect(pathInDocset(resourcesToCheck[resourceName])).to.be.a.file();
+		});
+	};
+	r.forEach(expectResourceToExist, r.keys(resourcesToCheck));
 });
