@@ -1,4 +1,4 @@
-all: clean copy-docs release
+all: clean create-docset release
 
 clean:
 	rm -r build
