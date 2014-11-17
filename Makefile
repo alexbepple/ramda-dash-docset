@@ -1,37 +1,40 @@
 bin := ./node_modules/.bin
-
+build_dir := build
+docset_dirname := Ramda.docset
+docset_path := $(build_dir)/$(docset_dirname)
 
 all: clean build check release
 
 clean:
-	rm -r build
+	if [ -d $(build_dir) ]; then rm -r $(build_dir); fi
 
 .PHONY: build
 build: copy-docs generate-index copy-static-content
 
 -create-docset-folder:
-	mkdir -p build/Ramda.docset
+	mkdir -p $(docset_path)
 
+ramdocs_zip := $(build_dir)/ramdocs.zip
 copy-docs:
-	mkdir -p build/Ramda.docset/Contents/Resources/Documents
-	wget https://github.com/alexbepple/ramdocs/archive/gh-pages.zip -O build/ramdocs.zip
-	unzip build/ramdocs.zip -d build
-	cp -R build/ramdocs-gh-pages/docs/* build/Ramda.docset/Contents/Resources/Documents
+	mkdir -p $(docset_path)/Contents/Resources/Documents
+	wget https://github.com/alexbepple/ramdocs/archive/gh-pages.zip -O $(ramdocs_zip)
+	unzip $(ramdocs_zip) -d $(build_dir)
+	cp -R $(build_dir)/ramdocs-gh-pages/docs/* $(docset_path)/Contents/Resources/Documents
 
 copy-static-content: -create-docset-folder
-	cp -R docset_static_content/* build/Ramda.docset
+	cp -R docset_static_content/* $(docset_path)
 
 generate-index:
 	npm install
 	node generate_index.js
 
 install:
-	open build/Ramda.docset
+	open $(docset_path)
 
 release:
-	cd build; tar --exclude='.DS_Store' -cvzf Ramda.tgz Ramda.docset
+	cd $(build_dir); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_dirname)
 
 
 .PHONY: check
 check:
-	DOCSET_PATH=build/Ramda.docset $(bin)/mocha --recursive check --reporter mocha-unfunk-reporter
+	DOCSET_PATH=$(docset_path) $(bin)/mocha --recursive check --reporter mocha-unfunk-reporter
