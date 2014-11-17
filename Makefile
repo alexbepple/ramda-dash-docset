@@ -1,12 +1,13 @@
 bin := ./node_modules/.bin
 
 
-all: clean create-docset release
+all: clean build check release
 
 clean:
 	rm -r build
 
-create-docset: copy-docs generate-index copy-static-content
+.PHONY: build
+build: copy-docs generate-index copy-static-content
 
 -create-docset-folder:
 	mkdir -p build/Ramda.docset
