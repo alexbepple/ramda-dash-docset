@@ -22,4 +22,4 @@ install:
 	open build/Ramda.docset
 
 release:
-	tar --exclude='.DS_Store' -cvzf build/Ramda.tgz build/Ramda.docset
+	cd build; tar --exclude='.DS_Store' -cvzf Ramda.tgz Ramda.docset
