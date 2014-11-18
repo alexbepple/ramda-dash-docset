@@ -9,7 +9,7 @@ clean:
 	if [ -d $(build_dir) ]; then rm -r $(build_dir); fi
 
 .PHONY: build
-build: copy-docs generate-index copy-static-content
+build: copy-docs docset-index copy-static-content
 
 -create-docset-folder:
 	mkdir -p $(docset_path)
@@ -24,7 +24,9 @@ copy-docs:
 copy-static-content: -create-docset-folder
 	cp -R docset_static_content/* $(docset_path)
 
-generate-index:
+clean-docset-index:
+	rm $(docset_path)/Contents/Resources/docSet.dsidx
+docset-index:
 	npm install
 	node generate_index.js
 
@@ -35,6 +37,7 @@ release:
 	cd $(build_dir); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_dirname)
 
 
+args = 
 .PHONY: check
 check:
-	DOCSET_PATH=$(docset_path) $(bin)/mocha --recursive check --reporter mocha-unfunk-reporter
+	DOCSET_PATH=$(docset_path) $(bin)/mocha --recursive check --reporter mocha-unfunk-reporter $(args)
