@@ -9,8 +9,6 @@ db.serialize(function(){
     db.run('CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);');
 });
 
-var entries = [];
-
 fs.readFile('./build/Ramda.docset/Contents/Resources/Documents/R.html', { encoding: 'utf-8' }, function (err, data) {
     if(err) throw err;
 
@@ -18,7 +16,8 @@ fs.readFile('./build/Ramda.docset/Contents/Resources/Documents/R.html', { encodi
     var functionNames = [];
     $('h4.name').each(function(_, elem){ functionNames.push(elem.attribs.id); });
 
+    var stmt = db.prepare('INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES (?, "Function", ?)');
     functionNames.forEach(function(functionName){
-        db.run('INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ("' + functionName + '", "Function", "R.html#' + functionName + '");');
+        stmt.run(functionName, 'R.html#'+functionName);
     });
 });
