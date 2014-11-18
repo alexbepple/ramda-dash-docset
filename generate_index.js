@@ -1,7 +1,8 @@
 var fs = require('fs');
 var cheerio = require('cheerio');
+
 var sqlite3 = require('sqlite3');
-var db = new sqlite3.Database('build/Ramda.docset/Contents/Resources/docSet.dsidx');
+var db = new sqlite3.Database(process.argv[2]);
 
 db.serialize(function(){
 	db.run('DROP TABLE IF EXISTS searchIndex;');
@@ -9,7 +10,7 @@ db.serialize(function(){
     db.run('CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);');
 });
 
-fs.readFile('./build/Ramda.docset/Contents/Resources/Documents/R.html', { encoding: 'utf-8' }, function (err, data) {
+fs.readFile(process.argv[3], { encoding: 'utf-8' }, function (err, data) {
     if(err) throw err;
 
     var $ = cheerio.load(data);

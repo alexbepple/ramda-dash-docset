@@ -2,6 +2,8 @@ bin := ./node_modules/.bin
 build_dir := build
 docset_dirname := Ramda.docset
 docset_path := $(build_dir)/$(docset_dirname)
+index_path := $(docset_path)/Contents/Resources/docSet.dsidx
+api_page_path := $(docset_path)/Contents/Resources/Documents/R.html
 
 all: clean build check release
 
@@ -25,10 +27,10 @@ copy-static-content: -create-docset-folder
 	cp -R docset_static_content/* $(docset_path)
 
 clean-docset-index:
-	rm $(docset_path)/Contents/Resources/docSet.dsidx
+	rm $(index_path)
 docset-index:
 	npm install
-	node generate_index.js
+	node generate_index.js $(index_path) $(api_page_path)
 
 install:
 	open $(docset_path)
