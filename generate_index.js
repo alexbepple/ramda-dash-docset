@@ -16,7 +16,7 @@ fs.readFile('./build/Ramda.docset/Contents/Resources/Documents/R.html', { encodi
     var functionNames = [];
     $('h4.name').each(function(_, elem){ functionNames.push(elem.attribs.id); });
 
-    var stmt = db.prepare('INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES (?, "Function", ?)');
+    var stmt = db.prepare('INSERT INTO searchIndex(name, type, path) VALUES (?, "Function", ?)');
     functionNames.forEach(function(functionName){
         stmt.run(functionName, 'R.html#'+functionName);
     });
