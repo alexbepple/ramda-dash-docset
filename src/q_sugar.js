@@ -1,8 +1,8 @@
 var q = require('q');
 var r = require('ramda');
 
-var sequence = function () {
-	return r.lPartial(r.reduce, q.when, q(), arguments);
+var reduce = function (initial) {
+	return r.lPartial(r.reduce, q.when, initial, r.tail(arguments));
 };
 
 var exec = function (fn) {
@@ -15,6 +15,6 @@ var all = function () {
 };
 
 module.exports = {
-	sequence: sequence,
+	reduce: reduce,
 	all: all
 };

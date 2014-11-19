@@ -19,8 +19,8 @@ var createIndex = function () {
     return deferred.promise;
 };
 
-var readApiHtml = function () {
-    return q.nfcall(fs.readFile, apiPagePath, { encoding: 'utf-8' });
+var readFile = function (path) {
+    return q.nfcall(fs.readFile, path, { encoding: 'utf-8' });
 };
 
 var extractFunctionNames = function (apiHtml) {
@@ -37,7 +37,7 @@ var writeFunctionNamesToIndex = function (db, functionNames) {
     });
 };
 
-var getFunctionNames = qq.sequence(readApiHtml, extractFunctionNames);
+var getFunctionNames = qq.reduce(apiPagePath, readFile, extractFunctionNames);
 
 qq.all(createIndex, getFunctionNames)
 .spread(writeFunctionNamesToIndex);
