@@ -16,17 +16,15 @@ var createIndex = function () {
     });
 };
 
-var getFunctionNames = function () {
-    var deferred = q.defer();
-    fs.readFile(apiPagePath, { encoding: 'utf-8' }, function (err, data) {
-        if(err) throw err;
+var readApiHtml = function () {
+    return q.nfcall(fs.readFile, apiPagePath, { encoding: 'utf-8' });
+};
 
-        var $ = cheerio.load(data);
-        var functionNames = [];
-        $('h4.name').each(function(_, elem){ functionNames.push(elem.attribs.id); });
-        deferred.resolve(functionNames);
-    });
-    return deferred.promise;
+var extractFunctionNames = function (apiHtml) {
+    var $ = cheerio.load(apiHtml);
+    var functionNames = [];
+    $('h4.name').each(function(_, elem){ functionNames.push(elem.attribs.id); });
+    return functionNames;
 };
 
 var writeFunctionNamesToIndex = function (functionNames) {
@@ -37,7 +35,8 @@ var writeFunctionNamesToIndex = function (functionNames) {
 };
 
 var fillIndex = function () {
-    getFunctionNames().then(writeFunctionNamesToIndex);
+    var steps = [readApiHtml, extractFunctionNames, writeFunctionNamesToIndex];
+    steps.reduce(q.when, q());
 };
 
 createIndex();
