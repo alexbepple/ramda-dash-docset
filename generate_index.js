@@ -1,7 +1,7 @@
 var fs = require('fs');
 var cheerio = require('cheerio');
 var q = require('q');
-var _q = require('./src/q_sugar');
+var qq = require('./src/q_sugar');
 var sqlite3 = require('sqlite3');
 
 var indexPath = process.argv[2];
@@ -37,8 +37,8 @@ var writeFunctionNamesToIndex = function (db, functionNames) {
     });
 };
 
-var getFunctionNames = _q.sequence(readApiHtml, extractFunctionNames);
+var getFunctionNames = qq.sequence(readApiHtml, extractFunctionNames);
 
-q.all([createIndex(), getFunctionNames()])
+qq.all(createIndex, getFunctionNames)
 .spread(writeFunctionNamesToIndex);
 
