@@ -7,14 +7,16 @@ var sqlite3 = require('sqlite3');
 var indexPath = process.argv[2];
 var apiPagePath = process.argv[3];
 
-var db = new sqlite3.Database(indexPath);
-
 var createIndex = function () {
+    var db = new sqlite3.Database(indexPath);
+    var deferred = q.defer();
     db.serialize(function(){
         db.run('DROP TABLE IF EXISTS searchIndex;');
         db.run('CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT);');
         db.run('CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);');
+        deferred.resolve(db);
     });
+    return deferred.promise;
 };
 
 var readApiHtml = function () {
@@ -28,16 +30,15 @@ var extractFunctionNames = function (apiHtml) {
     return functionNames;
 };
 
-var writeFunctionNamesToIndex = function (functionNames) {
+var writeFunctionNamesToIndex = function (db, functionNames) {
     var stmt = db.prepare('INSERT INTO searchIndex(name, type, path) VALUES (?, "Function", ?)');
     functionNames.forEach(function(functionName){
         stmt.run(functionName, 'R.html#'+functionName);
     });
 };
 
-var fillIndex = _q.sequence(
-    readApiHtml, extractFunctionNames, writeFunctionNamesToIndex);
+var getFunctionNames = _q.sequence(readApiHtml, extractFunctionNames);
 
-createIndex();
-fillIndex();
+q.all([createIndex(), getFunctionNames()])
+.spread(writeFunctionNamesToIndex);
 
