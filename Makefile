@@ -27,7 +27,7 @@ copy-static-content: -create-docset-folder
 	cp -R docset_static_content/* $(docset_path)
 
 clean-docset-index:
-	rm $(index_path)
+	if [ -f $(index_path) ]; then rm $(index_path); fi
 docset-index:
 	npm install
 	node generate_index.js $(index_path) $(api_page_path)
