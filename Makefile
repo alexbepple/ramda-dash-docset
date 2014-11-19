@@ -8,7 +8,7 @@ api_page_path := $(docset_path)/Contents/Resources/Documents/R.html
 all: clean build check release
 
 clean:
-	if [ -d $(build_dir) ]; then rm -r $(build_dir); fi
+	rm -rf $(build_dir)
 
 .PHONY: build
 build: copy-docs docset-index copy-static-content
@@ -27,7 +27,7 @@ copy-static-content: -create-docset-folder
 	cp -R docset_static_content/* $(docset_path)
 
 clean-docset-index:
-	if [ -f $(index_path) ]; then rm $(index_path); fi
+	rm -f $(index_path)
 docset-index:
 	npm install
 	node generate_index.js $(index_path) $(api_page_path)
