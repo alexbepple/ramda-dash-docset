@@ -1,4 +1,4 @@
-bin := ./node_modules/.bin
+bin := $(shell npm bin)
 build_dir := build
 docset_dirname := Ramda.docset
 docset_path := $(build_dir)/$(docset_dirname)
