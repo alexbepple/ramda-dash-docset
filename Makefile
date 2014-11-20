@@ -42,4 +42,4 @@ release:
 args = 
 .PHONY: check
 check:
-	DOCSET_PATH=$(docset_path) $(bin)/mocha --recursive check --reporter mocha-unfunk-reporter $(args)
+	DOCSET_PATH=$(docset_path) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter $(args)
