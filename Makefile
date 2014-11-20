@@ -1,4 +1,5 @@
 bin := $(shell npm bin)
+lsc := $(bin)/lsc
 build_dir := build
 docset_dirname := Ramda.docset
 docset_path := $(build_dir)/$(docset_dirname)
@@ -29,8 +30,7 @@ copy-static-content: -create-docset-folder
 clean-docset-index:
 	rm -f $(index_path)
 docset-index:
-	npm install
-	node generate_index.js $(index_path) $(api_page_path)
+	$(lsc) generate_index $(index_path) $(api_page_path)
 
 install:
 	open $(docset_path)
