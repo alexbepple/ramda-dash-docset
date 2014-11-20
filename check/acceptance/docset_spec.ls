@@ -20,7 +20,7 @@ describe 'Ramda docset' ->
         index: 'Contents/Resources/docSet.dsidx'
     expectResourceToExist = (resourceName) ->
         specify "contains #resourceName", ->
-            expect(pathInDocset(resourcesToCheck[resourceName])).to.be.a.file()
+            expect pathInDocset(resourcesToCheck[resourceName]) .to.be.a.file!
     keys resourcesToCheck |> map expectResourceToExist
 
 describe 'Index' ->
@@ -29,5 +29,5 @@ describe 'Index' ->
         db.get 'select count(*) from searchIndex;', (err, row) ->
             if err then throw err
             noOfIndexEntries = row[keys row |> head]
-            expect(noOfIndexEntries).to.equal(184)
-            done()
+            expect noOfIndexEntries .to.equal 184
+            done!
