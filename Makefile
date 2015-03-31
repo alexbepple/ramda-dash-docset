@@ -13,7 +13,7 @@ clean:
 	rm -rf $(build_dir)
 
 .PHONY: build
-build: copy-docs docset-index clean-up-api-page copy-static-content
+build: copy-docs docset-index clean-up-homepage clean-up-api-page copy-static-content
 
 copy-docs:
 	mkdir -p $(docset_docs)
@@ -21,6 +21,10 @@ copy-docs:
 	rm -rf $(docset_docs)/_*
 	rm -rf $(docset_docs)/fonts
 	rm -rf $(docset_docs)/repl
+
+clean-up-homepage:
+	rm -rf $(docset_docs)/index.html
+	$(lsc) cleanUpHomepage ramdajs.com/index.html $(docset_docs)/index.html
 
 clean-up-api-page:
 	rm -rf $(docset_docs)/docs/index.html
