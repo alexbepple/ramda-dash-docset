@@ -13,7 +13,7 @@ clean:
 	rm -rf $(build_dir)
 
 .PHONY: build
-build: copy-docs docset-index copy-static-content
+build: copy-docs docset-index clean-up-api-page copy-static-content
 
 copy-docs:
 	mkdir -p $(docset_docs)
@@ -21,6 +21,10 @@ copy-docs:
 	rm -rf $(docset_docs)/_*
 	rm -rf $(docset_docs)/fonts
 	rm -rf $(docset_docs)/repl
+
+clean-up-api-page:
+	rm -rf $(docset_docs)/docs/index.html
+	$(lsc) cleanUpApiPage ramdajs.com/docs/index.html $(docset_docs)/docs/index.html
 
 copy-static-content:
 	mkdir -p $(docset_path)
@@ -38,7 +42,7 @@ release:
 	cd $(build_dir); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_dirname)
 
 
-args = 
+args =
 .PHONY: check
 check:
 	DOCSET_PATH=$(docset_path) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter $(args)
