@@ -5,6 +5,7 @@ docset_dirname := Ramda.docset
 docset_path := $(build_dir)/$(docset_dirname)
 index_path := $(docset_path)/Contents/Resources/docSet.dsidx
 api_page_path := $(docset_path)/Contents/Resources/Documents/R.html
+docset_docs := $(docset_path)/Contents/Resources/Documents
 
 all: clean build check release
 
@@ -14,17 +15,15 @@ clean:
 .PHONY: build
 build: copy-docs docset-index copy-static-content
 
--create-docset-folder:
-	mkdir -p $(docset_path)
-
-ramdocs_zip := $(build_dir)/ramdocs.zip
 copy-docs:
-	mkdir -p $(docset_path)/Contents/Resources/Documents
-	wget https://github.com/alexbepple/ramdocs/archive/gh-pages.zip -O $(ramdocs_zip)
-	unzip $(ramdocs_zip) -d $(build_dir)
-	cp -R $(build_dir)/ramdocs-gh-pages/docs/* $(docset_path)/Contents/Resources/Documents
+	mkdir -p $(docset_docs)
+	cp -R ramdajs.com/* $(docset_docs)
+	rm -rf $(docset_docs)/_*
+	rm -rf $(docset_docs)/fonts
+	rm -rf $(docset_docs)/repl
 
-copy-static-content: -create-docset-folder
+copy-static-content:
+	mkdir -p $(docset_path)
 	cp -R docset_static_content/* $(docset_path)
 
 clean-docset-index:
