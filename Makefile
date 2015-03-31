@@ -4,7 +4,7 @@ build_dir := build
 docset_dirname := Ramda.docset
 docset_path := $(build_dir)/$(docset_dirname)
 index_path := $(docset_path)/Contents/Resources/docSet.dsidx
-api_page_path := $(docset_path)/Contents/Resources/Documents/R.html
+api_page_path := $(docset_path)/Contents/Resources/Documents/docs/index.html
 docset_docs := $(docset_path)/Contents/Resources/Documents
 
 all: clean build check release

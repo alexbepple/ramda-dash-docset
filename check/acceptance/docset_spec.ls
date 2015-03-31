@@ -16,7 +16,7 @@ describe 'Ramda docset' ->
         'high-res icon': 'icon@2x.png'
         'Info.plist': 'Contents/Info.plist'
         'start page': 'Contents/Resources/Documents/index.html'
-        'API page': 'Contents/Resources/Documents/R.html'
+        'API page': 'Contents/Resources/Documents/docs/index.html'
         index: 'Contents/Resources/docSet.dsidx'
     expectResourceToExist = (resourceName) ->
         specify "contains #resourceName", ->
@@ -29,5 +29,5 @@ describe 'Index' ->
         err, row <- db.get 'select count(*) from searchIndex;'
         if err then throw err
         noOfIndexEntries = row[keys row |> head]
-        expect noOfIndexEntries .to.equal 184
+        expect noOfIndexEntries .to.equal 209
         done!
