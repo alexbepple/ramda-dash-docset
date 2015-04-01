@@ -6,11 +6,11 @@ require! {
 
 removeLayout = ($) -> $('html').removeClass 'docs-page'
 
-actions = r.pipe(
-    r.tap html.remove '.navbar'
-    r.tap html.remove '.sidebar'
-    r.tap removeLayout
-)
+actions = [
+    html.remove '.navbar'
+    html.remove '.sidebar'
+    removeLayout
+]
 
 
 [source, sink] = process.argv[2, 3]

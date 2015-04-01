@@ -5,11 +5,13 @@ require! {
 
 remove = (selector, $) --> $(selector).remove()
 
-process = (actions) -> r.pipe(
-    cheerio.load
-    actions
-    ($) -> $.html()
-)
+process = (actions) ->
+    taps = r.map r.tap, actions
+    r.pipe(
+        cheerio.load
+        r.apply r.pipe, taps
+        ($) -> $.html()
+    )
 
 module.exports = {
     process

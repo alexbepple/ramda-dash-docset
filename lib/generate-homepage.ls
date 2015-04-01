@@ -8,12 +8,11 @@ removeBuildStatusEtc = ($) -> $('article p').has('a[href*="travis-ci"]').remove(
 useLocalLogo = ($) ->
     $('img[src*=ramdaFilled]').attr('src', 'logo.png')
 
-actions = r.pipe(
-    r.tap html.remove '.navbar-left'
-    r.tap removeBuildStatusEtc
-    r.tap useLocalLogo
-)
-
+actions = [
+    html.remove '.navbar-left'
+    removeBuildStatusEtc
+    useLocalLogo
+]
 
 [source, sink] = process.argv[2, 3]
 
