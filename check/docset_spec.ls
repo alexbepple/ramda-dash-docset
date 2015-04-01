@@ -26,8 +26,16 @@ describe 'Ramda docset' ->
 describe 'Index' ->
     specify 'contains all the functions', (done) ->
         db = new sqlite3.Database pathInDocset('Contents/Resources/docSet.dsidx')
-        err, row <- db.get 'select count(*) from searchIndex;'
+        err, row <- db.get 'select count(*) from searchIndex where type = "Function";'
         if err then throw err
-        noOfIndexEntries = row[keys row |> head]
-        expect noOfIndexEntries .to.equal 209
+        noOfFunctions = row[keys row |> head]
+        expect noOfFunctions .to.equal 209
+        done!
+
+    specify 'contains all the categories', (done) ->
+        db = new sqlite3.Database pathInDocset('Contents/Resources/docSet.dsidx')
+        err, row <- db.get 'select count(*) from searchIndex where type = "Category";'
+        if err then throw err
+        noOfCategories = row[keys row |> head]
+        expect noOfCategories .to.equal 8
         done!
