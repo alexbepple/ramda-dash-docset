@@ -4,6 +4,7 @@ require! {
 }
 
 remove = (selector, $) --> $(selector).remove()
+hide = (selector, $) --> $(selector).css 'display', 'none'
 
 process = (actions) ->
     taps = r.map r.tap, actions
@@ -16,4 +17,5 @@ process = (actions) ->
 module.exports = {
     process
     remove
+    hide
 }

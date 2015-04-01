@@ -8,7 +8,7 @@ removeLayout = ($) -> $('html').removeClass 'docs-page'
 
 actions = [
     html.remove '.navbar'
-    html.remove '.sidebar'
+    html.hide '.sidebar'
     removeLayout
 ]
 
