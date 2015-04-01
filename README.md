@@ -7,6 +7,8 @@ Then run:
     npm install
     make all
 
+Assumes Node.js. Only tested on Mac.
+
 
 ## Icon
 
