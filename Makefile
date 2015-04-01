@@ -1,33 +1,32 @@
 bin := $(shell npm bin)
 lsc := $(bin)/lsc
-build_dir := build
-docset_dirname := Ramda.docset
-docset_path := $(build_dir)/$(docset_dirname)
-index_path := $(docset_path)/Contents/Resources/docSet.dsidx
-api_page_path := $(docset_path)/Contents/Resources/Documents/docs/index.html
-docset_docs := $(docset_path)/Contents/Resources/Documents
+
+build := build
+docset_name := Ramda.docset
+docset := $(build)/$(docset_name)
+docset_html := $(docset)/Contents/Resources/Documents
 originals := ramdajs.com
 
 all: clean build check release
 
 clean:
-	rm -rf $(build_dir)
+	rm -rf $(build)
 
 .PHONY: build
 build: copy-docs docset-index clean-up-homepage clean-up-api-page copy-static-content
 
 copy-docs:
-	mkdir -p $(docset_docs)
-	cp -R $(originals)/* $(docset_docs)
-	rm -rf $(docset_docs)/_*
-	rm -rf $(docset_docs)/fonts
-	rm -rf $(docset_docs)/repl
+	mkdir -p $(docset_html)
+	cp -R $(originals)/* $(docset_html)
+	rm -rf $(docset_html)/_*
+	rm -rf $(docset_html)/fonts
+	rm -rf $(docset_html)/repl
 
 
 logo_name := logo.png
-logo := $(docset_docs)/$(logo_name)
+logo := $(docset_html)/$(logo_name)
 homepage_subpath := index.html
-homepage := $(docset_docs)/$(homepage_subpath)
+homepage := $(docset_html)/$(homepage_subpath)
 original_homepage := $(originals)/$(homepage_subpath)
 $(logo):
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(logo)
@@ -37,7 +36,7 @@ clean-up-homepage: $(logo)
 
 
 api_page_subpath := docs/index.html
-api_page := $(docset_docs)/$(api_page_subpath)
+api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(originals)/$(api_page_subpath)
 clean-up-api-page:
 	rm -rf $(api_page)
@@ -45,22 +44,24 @@ clean-up-api-page:
 
 
 copy-static-content:
-	mkdir -p $(docset_path)
-	cp -R docset_static_content/* $(docset_path)
+	mkdir -p $(docset)
+	cp -R static/* $(docset)
 
+
+index_path := $(docset)/Contents/Resources/docSet.dsidx
 clean-docset-index:
 	rm -f $(index_path)
 docset-index:
-	$(lsc) generate_index $(index_path) $(api_page_path)
+	$(lsc) generate_index $(index_path) $(api_page)
 
 install:
-	open $(docset_path)
+	open $(docset)
 
 release:
-	cd $(build_dir); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_dirname)
+	cd $(build); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_name)
 
 
 args =
 .PHONY: check
 check:
-	DOCSET_PATH=$(docset_path) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter $(args)
+	DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter $(args)
