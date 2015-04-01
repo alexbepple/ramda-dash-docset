@@ -14,16 +14,15 @@ prod: clean build check release
 
 clean:
 	rm -rf $(build)
-	mkdir -p $(build)
+
 
 .PHONY: build
 build: bits-from-original-doc index homepage api-page static-content
 
-$(vendor):
-	mkdir -p $(vendor)
 
 published_doc_archive := $(published_doc).tar.gz
-$(published_doc_archive): $(vendor)
+$(published_doc_archive):
+	mkdir -p `dirname $(published_doc_archive)`
 	wget https://github.com/ramda/ramda.github.io/tarball/master -O $(published_doc_archive)
 $(published_doc): $(published_doc_archive)
 	mkdir -p $(published_doc)
@@ -36,11 +35,16 @@ bits-from-original-doc: $(published_doc)
 
 logo_name := logo.png
 logo := $(docset_html)/$(logo_name)
+downloaded_logo := $(vendor)/$(logo_name)
 homepage_subpath := index.html
 homepage := $(docset_html)/$(homepage_subpath)
 original_homepage := $(published_doc)/$(homepage_subpath)
-$(logo):
-	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(logo)
+
+$(downloaded_logo):
+	mkdir -p `dirname $(downloaded_logo)`
+	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(downloaded_logo)
+$(logo): $(downloaded_logo)
+	cp $(downloaded_logo) $(logo)
 homepage: $(logo)
 	rm -rf $(homepage)
 	$(lsc) $(lib)/generate-homepage $(original_homepage) $(homepage)
