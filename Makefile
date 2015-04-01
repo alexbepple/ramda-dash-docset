@@ -9,7 +9,8 @@ docset := $(build)/$(docset_name)
 docset_html := $(docset)/Contents/Resources/Documents
 published_doc := $(vendor)/ramdajs.com
 
-all: clean build check release
+dev: clean build check install
+prod: clean build check release
 
 clean:
 	rm -rf $(build)
