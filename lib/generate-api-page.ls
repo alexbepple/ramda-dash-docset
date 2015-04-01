@@ -7,7 +7,6 @@ require! {
 removeLeftMarginForMainContent = ($) -> $('main').css 'left', '0'
 
 actions = [
-    html.remove '.navbar-left'
     html.hide '.sidebar'
     removeLeftMarginForMainContent
 ]

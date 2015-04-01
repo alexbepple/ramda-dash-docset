@@ -9,7 +9,6 @@ useLocalLogo = ($) ->
     $('img[src*=ramdaFilled]').attr('src', 'logo.png')
 
 actions = [
-    html.remove '.navbar-left'
     removeBuildStatusEtc
     useLocalLogo
 ]
