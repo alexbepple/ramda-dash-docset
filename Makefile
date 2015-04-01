@@ -1,6 +1,7 @@
 bin := $(shell npm bin)
 lsc := $(bin)/lsc
 
+lib := lib
 build := build
 docset_name := Ramda.docset
 docset := $(build)/$(docset_name)
@@ -32,7 +33,7 @@ $(logo):
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(logo)
 homepage: $(logo)
 	rm -rf $(homepage)
-	$(lsc) generate-homepage $(original_homepage) $(homepage)
+	$(lsc) $(lib)/generate-homepage $(original_homepage) $(homepage)
 
 
 api_page_subpath := docs/index.html
@@ -40,7 +41,7 @@ api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(originals)/$(api_page_subpath)
 api-page:
 	rm -rf $(api_page)
-	$(lsc) generate-api-page $(original_api_page) $(api_page)
+	$(lsc) $(lib)/generate-api-page $(original_api_page) $(api_page)
 
 
 static-content:
@@ -51,7 +52,7 @@ index_path := $(docset)/Contents/Resources/docSet.dsidx
 clean-index:
 	rm -f $(index_path)
 index:
-	$(lsc) generate-index $(index_path) $(api_page)
+	$(lsc) $(lib)/generate-index $(index_path) $(api_page)
 
 
 install:
