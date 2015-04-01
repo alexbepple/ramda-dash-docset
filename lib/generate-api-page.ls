@@ -5,10 +5,16 @@ require! {
 }
 
 removeLeftMarginForMainContent = ($) -> $('main').css 'left', '0'
+reorderFunctionsByCategory = ($) ->
+    allEntries = $('main section').get()
+    categoryName = -> $(it).find('.label-category').text()
+    reorderByCategory = r.pipe r.groupBy(categoryName), r.values, r.flatten
+    $('main') .empty() .append reorderByCategory(allEntries)
 
 actions = [
     html.hide '.sidebar'
     removeLeftMarginForMainContent
+    reorderFunctionsByCategory
 ]
 
 
