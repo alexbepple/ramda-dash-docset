@@ -13,9 +13,9 @@ clean:
 	rm -rf $(build)
 
 .PHONY: build
-build: copy-docs docset-index clean-up-homepage clean-up-api-page copy-static-content
+build: original-html index homepage api-page static-content
 
-copy-docs:
+original-html:
 	mkdir -p $(docset_html)
 	cp -R $(originals)/* $(docset_html)
 	rm -rf $(docset_html)/_*
@@ -30,33 +30,32 @@ homepage := $(docset_html)/$(homepage_subpath)
 original_homepage := $(originals)/$(homepage_subpath)
 $(logo):
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(logo)
-clean-up-homepage: $(logo)
+homepage: $(logo)
 	rm -rf $(homepage)
-	$(lsc) cleanUpHomepage $(original_homepage) $(homepage)
+	$(lsc) generate-homepage $(original_homepage) $(homepage)
 
 
 api_page_subpath := docs/index.html
 api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(originals)/$(api_page_subpath)
-clean-up-api-page:
+api-page:
 	rm -rf $(api_page)
-	$(lsc) cleanUpApiPage $(original_api_page) $(api_page)
+	$(lsc) generate-api-page $(original_api_page) $(api_page)
 
 
-copy-static-content:
-	mkdir -p $(docset)
+static-content:
 	cp -R static/* $(docset)
 
 
 index_path := $(docset)/Contents/Resources/docSet.dsidx
-clean-docset-index:
+clean-index:
 	rm -f $(index_path)
-docset-index:
-	$(lsc) generate_index $(index_path) $(api_page)
+index:
+	$(lsc) generate-index $(index_path) $(api_page)
+
 
 install:
 	open $(docset)
-
 release:
 	cd $(build); tar --exclude='.DS_Store' -cvzf Ramda.tgz $(docset_name)
 
