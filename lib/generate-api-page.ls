@@ -4,12 +4,12 @@ require! {
     './html'
 }
 
-removeLayout = ($) -> $('html').removeClass 'docs-page'
+removeLeftMarginForMainContent = ($) -> $('main').css 'left', '0'
 
 actions = [
-    html.remove '.navbar'
+    html.remove '.navbar-left'
     html.hide '.sidebar'
-    removeLayout
+    removeLeftMarginForMainContent
 ]
 
 
