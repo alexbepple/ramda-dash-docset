@@ -1,4 +1,5 @@
 require! [fs, cheerio, sqlite3, q]
+require! './util':{readFile}
 
 createIndex = (indexPath) ->
 	db = new sqlite3.Database indexPath
@@ -9,9 +10,6 @@ createIndex = (indexPath) ->
 		db.run 'CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path);'
 		deferred.resolve db
 	deferred.promise
-
-readFile = (path) ->
-	q.nfcall fs.readFile, path, {encoding: 'utf-8'}
 
 extractFunctionNames = (apiHtml) ->
 	$ = cheerio.load apiHtml
