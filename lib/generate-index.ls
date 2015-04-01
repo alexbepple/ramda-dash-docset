@@ -46,18 +46,12 @@ writeCategoryNamesToIndex = (categoriesWithFirstFunction, db) ->
         stmt.run category, 'docs/index.html#'+firstFunction
 
 
-getFunctionNames = (apiPagePath) ->
-    readFile apiPagePath .then extractFunctionNames
-
-getCategoriesWithFirstFunction = (apiPagePath) ->
-    readFile apiPagePath .then extractCategoriesWithFirstFunction
-
-
 [indexPath, apiPagePath] = process.argv[2, 3]
-
 db = createIndex(indexPath)
-q.all [getFunctionNames(apiPagePath), db]
-    ..spread writeFunctionNamesToIndex
+html = readFile apiPagePath
 
-q.all [getCategoriesWithFirstFunction(apiPagePath), db]
-    ..spread writeCategoryNamesToIndex
+q.spread [html.then(extractFunctionNames), db],
+    writeFunctionNamesToIndex
+
+q.spread [html.then(extractCategoriesWithFirstFunction), db],
+    writeCategoryNamesToIndex
