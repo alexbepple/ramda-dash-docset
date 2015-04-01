@@ -1,4 +1,4 @@
-require! [fs, cheerio, sqlite3, q]
+require! [fs, cheerio, sqlite3, q, util]
 require! ramda:r
 require! './util':{readFile}
 
@@ -35,13 +35,16 @@ extractCategoriesWithFirstFunction = (apiHtml) ->
     toFirstFunctionPerCategory $('li.func').get()
 
 
+prepareInsert = (db, type) ->
+    db.prepare util.format 'INSERT INTO searchIndex(name, type, path) VALUES (?, "%s", ?)', type
+
 writeFunctionNamesToIndex = (functionNames, db) ->
-    stmt = db.prepare 'INSERT INTO searchIndex(name, type, path) VALUES (?, "Function", ?)'
+    stmt = prepareInsert db, 'Function'
     for name in functionNames
         stmt.run name, 'docs/index.html#'+name
 
 writeCategoryNamesToIndex = (categoriesWithFirstFunction, db) ->
-    stmt = db.prepare 'INSERT INTO searchIndex(name, type, path) VALUES (?, "Category", ?)'
+    stmt = prepareInsert db, 'Category'
     for category, firstFunction of categoriesWithFirstFunction
         stmt.run category, 'docs/index.html#'+firstFunction
 
