@@ -10,11 +10,14 @@ writeToFile = (path) ->
 
 remove = (selector, $) --> $(selector).remove()
 removeBuildStatusEtc = ($) -> $('article p').has('a[href*="travis-ci"]').remove()
+useLocalLogo = ($) ->
+    $('img[src*=ramdaFilled]').attr('src', 'logo.png')
 
 cleanUp = r.pipe(
     cheerio.load
     r.tap remove '.navbar-left'
     r.tap removeBuildStatusEtc
+    r.tap useLocalLogo
     ($) -> $.html()
 )
 

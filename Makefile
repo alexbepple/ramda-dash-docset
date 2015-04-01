@@ -6,6 +6,7 @@ docset_path := $(build_dir)/$(docset_dirname)
 index_path := $(docset_path)/Contents/Resources/docSet.dsidx
 api_page_path := $(docset_path)/Contents/Resources/Documents/docs/index.html
 docset_docs := $(docset_path)/Contents/Resources/Documents
+originals := ramdajs.com
 
 all: clean build check release
 
@@ -17,18 +18,31 @@ build: copy-docs docset-index clean-up-homepage clean-up-api-page copy-static-co
 
 copy-docs:
 	mkdir -p $(docset_docs)
-	cp -R ramdajs.com/* $(docset_docs)
+	cp -R $(originals)/* $(docset_docs)
 	rm -rf $(docset_docs)/_*
 	rm -rf $(docset_docs)/fonts
 	rm -rf $(docset_docs)/repl
 
-clean-up-homepage:
-	rm -rf $(docset_docs)/index.html
-	$(lsc) cleanUpHomepage ramdajs.com/index.html $(docset_docs)/index.html
 
+logo_name := logo.png
+logo := $(docset_docs)/$(logo_name)
+homepage_subpath := index.html
+homepage := $(docset_docs)/$(homepage_subpath)
+original_homepage := $(originals)/$(homepage_subpath)
+$(logo):
+	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(logo)
+clean-up-homepage: $(logo)
+	rm -rf $(homepage)
+	$(lsc) cleanUpHomepage $(original_homepage) $(homepage)
+
+
+api_page_subpath := docs/index.html
+api_page := $(docset_docs)/$(api_page_subpath)
+original_api_page := $(originals)/$(api_page_subpath)
 clean-up-api-page:
-	rm -rf $(docset_docs)/docs/index.html
-	$(lsc) cleanUpApiPage ramdajs.com/docs/index.html $(docset_docs)/docs/index.html
+	rm -rf $(api_page)
+	$(lsc) cleanUpApiPage $(original_api_page) $(api_page)
+
 
 copy-static-content:
 	mkdir -p $(docset_path)
