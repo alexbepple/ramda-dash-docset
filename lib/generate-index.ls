@@ -1,8 +1,8 @@
-require! [fs, cheerio, sqlite3, q, util]
+require! [fs, cheerio, sqlite3, q]
 require! ramda:r
 require! './util':{readFile}
 
-createIndex = (indexPath) ->
+createIndexAt = (indexPath) ->
     db = new sqlite3.Database indexPath
     deferred = q.defer()
     db.serialize ->
@@ -20,23 +20,25 @@ extractFunctionNames = (apiHtml) ->
 
 
 extractCategoriesWithFirstFunction = (apiHtml) ->
-    $ = cheerio.load apiHtml
-
     toCategoryAndFunction = ->
         category: $(it).data('category')
         function: $(it).data('name')
-    nameOfFirstFunction = r.pipe r.head, r.prop('function')
+
+    toNameOfFirstFunction = r.pipe r.head, r.prop('function')
 
     toFirstFunctionPerCategory = r.pipe(
         r.map toCategoryAndFunction
         r.groupBy r.prop('category')
-        r.mapObj nameOfFirstFunction
+        r.mapObj toNameOfFirstFunction
     )
-    toFirstFunctionPerCategory $('li.func').get()
+
+    $ = cheerio.load apiHtml
+    functionEntries = $('li.func').get()
+    toFirstFunctionPerCategory functionEntries
 
 
 prepareInsert = (db, type) ->
-    db.prepare util.format 'INSERT INTO searchIndex(name, type, path) VALUES (?, "%s", ?)', type
+    db.prepare "INSERT INTO searchIndex(name, type, path) VALUES (?, '#{type}', ?)"
 
 writeFunctionNamesToIndex = (functionNames, db) ->
     stmt = prepareInsert db, 'Function'
@@ -50,13 +52,13 @@ writeCategoryNamesToIndex = (categoriesWithFirstFunction, db) ->
 
 
 [indexPath, apiPagePath] = process.argv[2, 3]
-db = createIndex(indexPath)
-html = readFile apiPagePath
+createIndex = r.always createIndexAt(indexPath)
+getHtml = r.always readFile apiPagePath
 
-q [html.then(extractFunctionNames), db]
+q [getHtml().then(extractFunctionNames), createIndex()]
     .spread writeFunctionNamesToIndex
     .done()
 
-q [html.then(extractCategoriesWithFirstFunction), db]
+q [getHtml().then(extractCategoriesWithFirstFunction), createIndex()]
     .spread writeCategoryNamesToIndex
     .done()
