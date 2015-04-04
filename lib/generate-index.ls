@@ -53,8 +53,10 @@ writeCategoryNamesToIndex = (categoriesWithFirstFunction, db) ->
 db = createIndex(indexPath)
 html = readFile apiPagePath
 
-q.spread [html.then(extractFunctionNames), db],
-    writeFunctionNamesToIndex
+q [html.then(extractFunctionNames), db]
+    .spread writeFunctionNamesToIndex
+    .done()
 
-q.spread [html.then(extractCategoriesWithFirstFunction), db],
-    writeCategoryNamesToIndex
+q [html.then(extractCategoriesWithFirstFunction), db]
+    .spread writeCategoryNamesToIndex
+    .done()
