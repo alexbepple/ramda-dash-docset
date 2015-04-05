@@ -1,13 +1,12 @@
 
 ## Generate docset
 
-Download <http://ramdajs.com/> to `./ramdajs.com/`, e.g. using SiteSucker.
-Then run:
+Get Node.
 
     npm install
-    make all
+    make prod
 
-Assumes Node.js. Only tested on Mac.
+Only tested on Mac.
 
 
 ## Icon
