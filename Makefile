@@ -52,7 +52,6 @@ $(downloaded_logo):
 $(logo): $(downloaded_logo)
 	cp $(downloaded_logo) $(logo)
 homepage: $(logo) $(original_homepage)
-	rm -rf $(homepage)
 	$(lsc) $(lib)/generate-homepage $(original_homepage) $(homepage)
 
 
@@ -60,7 +59,6 @@ api_page_subpath := docs/index.html
 api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(published_docs)/$(api_page_subpath)
 $(api_page): $(original_api_page)
-	rm -rf $(api_page)
 	mkdir -p `dirname $(api_page)`
 	$(lsc) $(lib)/generate-api-page $(original_api_page) $(api_page)
 api-page: $(api_page)
@@ -72,9 +70,7 @@ static-content:
 
 
 index := $(docset)/Contents/Resources/docSet.dsidx
-clean-index:
 $(index): $(api_page)
-	rm -f $(index)
 	$(lsc) $(lib)/generate-index $(index) $(api_page)
 index: $(index)
 
