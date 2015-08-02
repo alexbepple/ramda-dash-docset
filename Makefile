@@ -8,6 +8,7 @@ docset_name := Ramda.docset
 docset := $(build)/$(docset_name)
 docset_html := $(docset)/Contents/Resources/Documents
 published_doc := $(vendor)/ramdajs.com
+version := 0.15
 
 dev: clean build check install
 prod: clean build check release
@@ -29,23 +30,22 @@ $(published_doc): $(published_doc_archive)
 	tar -xzf $(published_doc_archive) --strip-components=1 --directory $(published_doc)
 bits-from-original-doc: $(published_doc)
 	mkdir -p $(docset_html)
-	cp -R $(published_doc)/0.13/* $(docset_html)
+	cp -R $(published_doc)/$(version)/* $(docset_html)
 	rm -r $(docset_html)/fonts
 
 
 logo_name := logo.png
 logo := $(docset_html)/$(logo_name)
 downloaded_logo := $(vendor)/$(logo_name)
-homepage_subpath := index.html
-homepage := $(docset_html)/$(homepage_subpath)
-original_homepage := $(published_doc)/$(homepage_subpath)
+homepage := $(docset_html)/index.html
+original_homepage := $(published_doc)/$(version)/index.html
 
 $(downloaded_logo):
 	mkdir -p `dirname $(downloaded_logo)`
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(downloaded_logo)
 $(logo): $(downloaded_logo)
 	cp $(downloaded_logo) $(logo)
-homepage: $(logo)
+homepage: $(logo) $(original_homepage)
 	rm -rf $(homepage)
 	$(lsc) $(lib)/generate-homepage $(original_homepage) $(homepage)
 
