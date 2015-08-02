@@ -20,7 +20,7 @@ clean:
 
 
 .PHONY: build
-build: static-content bits-from-original-doc homepage api-page index
+build: static-content bits-from-original-doc logo homepage api-page index
 
 
 all_published_docs_archive := $(all_published_docs).tar.gz
@@ -43,15 +43,17 @@ bits-from-original-doc: $(bits_from_original_doc)
 logo_name := logo.png
 logo := $(docset_html)/$(logo_name)
 downloaded_logo := $(vendor)/$(logo_name)
-homepage := $(docset_html)/index.html
-original_homepage := $(published_docs)/index.html
-
 $(downloaded_logo):
 	mkdir -p `dirname $@`
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $@
 $(logo): $(downloaded_logo)
 	mkdir -p `dirname $@`
 	cp $< $@
+logo: $(logo)
+
+
+homepage := $(docset_html)/index.html
+original_homepage := $(published_docs)/index.html
 $(homepage): $(original_homepage)
 	$(lsc) $(lib)/generate-homepage $< $@
 homepage: $(homepage)
