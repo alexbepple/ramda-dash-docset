@@ -20,7 +20,7 @@ clean:
 
 
 .PHONY: build
-build: bits-from-original-doc index homepage api-page static-content
+build: static-content bits-from-original-doc homepage api-page index
 
 
 all_published_docs_archive := $(all_published_docs).tar.gz
