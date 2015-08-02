@@ -29,9 +29,11 @@ $(published_doc): $(published_doc_archive)
 	mkdir -p $(published_doc)
 	tar -xzf $(published_doc_archive) --strip-components=1 --directory $(published_doc)
 bits-from-original-doc: $(published_doc)
-	mkdir -p $(docset_html)
-	cp -R $(published_doc)/$(version)/* $(docset_html)
-	rm -r $(docset_html)/fonts
+	mkdir -p $(docset_html)/docs/dist
+	cp -R $(published_doc)/$(version)/style.css $(docset_html)
+	cp -R $(published_doc)/$(version)/docs/dist/ramda.js $(docset_html)/docs/dist/ramda.js
+	cp -R $(published_doc)/$(version)/docs/main.js $(docset_html)/docs/main.js
+
 
 
 logo_name := logo.png
@@ -53,20 +55,24 @@ homepage: $(logo) $(original_homepage)
 api_page_subpath := docs/index.html
 api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(published_doc)/$(api_page_subpath)
-api-page:
+$(api_page): $(original_api_page)
 	rm -rf $(api_page)
+	mkdir -p `dirname $(api_page)`
 	$(lsc) $(lib)/generate-api-page $(original_api_page) $(api_page)
+api-page: $(api_page)
 
 
 static-content:
+	mkdir -p $(docset)
 	cp -R static/* $(docset)
 
 
-index_path := $(docset)/Contents/Resources/docSet.dsidx
+index := $(docset)/Contents/Resources/docSet.dsidx
 clean-index:
-	rm -f $(index_path)
-index:
-	$(lsc) $(lib)/generate-index $(index_path) $(api_page)
+$(index): $(api_page)
+	rm -f $(index)
+	$(lsc) $(lib)/generate-index $(index) $(api_page)
+index: $(index)
 
 
 install:
