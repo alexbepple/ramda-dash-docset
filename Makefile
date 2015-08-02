@@ -85,3 +85,12 @@ args =
 .PHONY: check
 check:
 	DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter $(args)
+
+
+Makefile_visualization := tmp/Makefile.png
+$(Makefile_visualization):
+	mkdir -p `dirname $(Makefile_visualization)`
+	$(MAKE) -Bnd | make2graph | dot -Tpng -o $(Makefile_visualization)
+.PHONY: visualize
+visualize: $(Makefile_visualization)
+	open $(Makefile_visualization)
