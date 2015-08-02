@@ -25,11 +25,11 @@ build: bits-from-original-doc index homepage api-page static-content
 
 all_published_docs_archive := $(all_published_docs).tar.gz
 $(all_published_docs_archive):
-	mkdir -p `dirname $(all_published_docs_archive)`
-	wget https://github.com/ramda/ramda.github.io/tarball/master -O $(all_published_docs_archive)
+	mkdir -p `dirname $@`
+	wget https://github.com/ramda/ramda.github.io/tarball/master -O $@
 $(all_published_docs): $(all_published_docs_archive)
-	mkdir -p $(all_published_docs)
-	tar -xzf $(all_published_docs_archive) --strip-components=1 --directory $(all_published_docs)
+	mkdir -p $@
+	tar -xzf $< --strip-components=1 --directory $@
 
 
 bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js
@@ -47,20 +47,22 @@ homepage := $(docset_html)/index.html
 original_homepage := $(published_docs)/index.html
 
 $(downloaded_logo):
-	mkdir -p `dirname $(downloaded_logo)`
-	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $(downloaded_logo)
+	mkdir -p `dirname $@`
+	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $@
 $(logo): $(downloaded_logo)
-	cp $(downloaded_logo) $(logo)
-homepage: $(logo) $(original_homepage)
-	$(lsc) $(lib)/generate-homepage $(original_homepage) $(homepage)
+	mkdir -p `dirname $@`
+	cp $< $@
+$(homepage): $(original_homepage)
+	$(lsc) $(lib)/generate-homepage $< $@
+homepage: $(homepage)
 
 
 api_page_subpath := docs/index.html
 api_page := $(docset_html)/$(api_page_subpath)
 original_api_page := $(published_docs)/$(api_page_subpath)
 $(api_page): $(original_api_page)
-	mkdir -p `dirname $(api_page)`
-	$(lsc) $(lib)/generate-api-page $(original_api_page) $(api_page)
+	mkdir -p `dirname $@`
+	$(lsc) $(lib)/generate-api-page $< $@
 api-page: $(api_page)
 
 
@@ -71,7 +73,7 @@ static-content:
 
 index := $(docset)/Contents/Resources/docSet.dsidx
 $(index): $(api_page)
-	$(lsc) $(lib)/generate-index $(index) $(api_page)
+	$(lsc) $(lib)/generate-index $@ $<
 index: $(index)
 
 
@@ -89,8 +91,8 @@ check:
 
 Makefile_visualization := tmp/Makefile.png
 $(Makefile_visualization):
-	mkdir -p `dirname $(Makefile_visualization)`
-	$(MAKE) -Bnd | make2graph | dot -Tpng -o $(Makefile_visualization)
+	mkdir -p `dirname $@`
+	$(MAKE) -Bnd | make2graph | dot -Tpng -o $@
 .PHONY: visualize
 visualize: $(Makefile_visualization)
-	open $(Makefile_visualization)
+	open $<
