@@ -28,12 +28,14 @@ $(published_doc_archive):
 $(published_doc): $(published_doc_archive)
 	mkdir -p $(published_doc)
 	tar -xzf $(published_doc_archive) --strip-components=1 --directory $(published_doc)
-bits-from-original-doc: $(published_doc)
-	mkdir -p $(docset_html)/docs/dist
-	cp -R $(published_doc)/$(version)/style.css $(docset_html)
-	cp -R $(published_doc)/$(version)/docs/dist/ramda.js $(docset_html)/docs/dist/ramda.js
-	cp -R $(published_doc)/$(version)/docs/main.js $(docset_html)/docs/main.js
 
+
+bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js
+bits_from_original_doc := $(foreach bit,$(bits_from_original_doc_files),$(docset_html)/$(bit))
+$(bits_from_original_doc): $(docset_html)/%: $(published_doc)/$(version)/%
+	mkdir -p `dirname $@`
+	cp $< $@
+bits-from-original-doc: $(bits_from_original_doc)
 
 
 logo_name := logo.png
