@@ -89,7 +89,7 @@ check:
 
 
 Makefile_visualization := tmp/Makefile.png
-$(Makefile_visualization):
+$(Makefile_visualization): Makefile
 	mkdir -p `dirname $@`
 	$(MAKE) -Bnd | make2graph | dot -Tpng -o $@
 .PHONY: visualize
