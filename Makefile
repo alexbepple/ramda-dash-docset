@@ -35,8 +35,7 @@ $(all_published_docs): $(all_published_docs_archive)
 bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js
 bits_from_original_doc := $(foreach bit,$(bits_from_original_doc_files),$(docset_html)/$(bit))
 $(bits_from_original_doc): $(docset_html)/%: $(published_docs)/%
-	mkdir -p `dirname $@`
-	cp $< $@
+	ditto $< $@
 bits-from-original-doc: $(bits_from_original_doc)
 
 
@@ -47,8 +46,7 @@ $(downloaded_logo):
 	mkdir -p `dirname $@`
 	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $@
 $(logo): $(downloaded_logo)
-	mkdir -p `dirname $@`
-	cp $< $@
+	ditto $< $@
 logo: $(logo)
 
 
@@ -69,8 +67,7 @@ api-page: $(api_page)
 
 
 static-content:
-	mkdir -p $(docset)
-	cp -R static/* $(docset)
+	ditto static $(docset)
 
 
 index := $(docset)/Contents/Resources/docSet.dsidx
