@@ -14,7 +14,7 @@ Only tested on Mac.
 * Change version in `Makefile`.
 * `make -B all-published-docs`
 * Generate docset.
-** Most likely, the number of functions will change.
+    * Most likely, the number of functions will change.
 
 
 ## Icon
