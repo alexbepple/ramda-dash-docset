@@ -8,7 +8,7 @@ docset_name := Ramda.docset
 docset := $(build)/$(docset_name)
 docset_html := $(docset)/Contents/Resources/Documents
 all_published_docs := $(vendor)/ramdajs.com
-version := 0.15
+version := 0.17
 published_docs := $(all_published_docs)/$(version)
 
 
@@ -30,9 +30,11 @@ $(all_published_docs_archive):
 $(all_published_docs): $(all_published_docs_archive)
 	mkdir -p $@
 	tar -xzf $< --strip-components=1 --directory $@
+.PHONY: all-published-docs
+all-published-docs: $(all_published_docs)
 
 
-bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js
+bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js fonts/glyphicons-halflings-regular.woff
 bits_from_original_doc := $(foreach bit,$(bits_from_original_doc_files),$(docset_html)/$(bit))
 $(bits_from_original_doc): $(docset_html)/%: $(published_docs)/%
 	ditto $< $@
