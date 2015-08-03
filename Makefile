@@ -4,9 +4,11 @@ lsc := $(bin)/lsc
 lib := lib
 build := build
 vendor := vendor
+
 docset_name := Ramda.docset
 docset := $(build)/$(docset_name)
 docset_html := $(docset)/Contents/Resources/Documents
+
 all_published_docs := $(vendor)/ramdajs.com
 version := 0.17
 published_docs := $(all_published_docs)/$(version)
@@ -14,7 +16,6 @@ published_docs := $(all_published_docs)/$(version)
 
 dev: clean build check install
 prod: clean build check release
-
 clean:
 	rm -rf $(build)
 
