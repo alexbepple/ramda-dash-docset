@@ -21,7 +21,7 @@ clean:
 
 
 .PHONY: build
-build: static-files bits-from-original-doc logo homepage api-page index
+build: static-files files-from-published_docs logo homepage api-page index
 
 
 all_published_docs_archive := $(all_published_docs).tar.gz
@@ -35,11 +35,10 @@ $(all_published_docs): $(all_published_docs_archive)
 all-published-docs: $(all_published_docs)
 
 
-bits_from_original_doc_files := style.css docs/main.js docs/dist/ramda.js fonts/glyphicons-halflings-regular.woff
-bits_from_original_doc := $(foreach bit,$(bits_from_original_doc_files),$(docset_html)/$(bit))
-$(bits_from_original_doc): $(docset_html)/%: $(published_docs)/%
-	ditto $< $@
-bits-from-original-doc: $(bits_from_original_doc)
+files_from_published_docs := style.css docs/main.js docs/dist/ramda.js fonts/glyphicons-halflings-regular.woff
+$(files_from_published_docs):
+	ditto $(published_docs)/$@ $(docset_html)/$@
+files-from-published_docs: $(files_from_published_docs)
 
 
 logo_name := logo.png
@@ -69,12 +68,9 @@ $(api_page): $(original_api_page)
 api-page: $(api_page)
 
 
-static := static
-static_files_originals := $(wildcard $(static)/*.*) $(wildcard $(static)/**/*.*)
-static_files := $(patsubst $(static)/%,$(docset)/%,$(static_files_originals))
-$(static_files): $(docset)/%: $(static)/%
-	ditto $< $@
-static-files: $(static_files)
+static-files:
+	mkdir -p $(docset)
+	cp -R static/* $(docset)
 
 
 index := $(docset)/Contents/Resources/docSet.dsidx
