@@ -21,7 +21,7 @@ clean:
 
 
 .PHONY: build
-build: static-content bits-from-original-doc logo homepage api-page index
+build: static-files bits-from-original-doc logo homepage api-page index
 
 
 all_published_docs_archive := $(all_published_docs).tar.gz
@@ -69,8 +69,12 @@ $(api_page): $(original_api_page)
 api-page: $(api_page)
 
 
-static-content:
-	ditto static $(docset)
+static := static
+static_files_originals := $(wildcard $(static)/*.*) $(wildcard $(static)/**/*.*)
+static_files := $(patsubst $(static)/%,$(docset)/%,$(static_files_originals))
+$(static_files): $(docset)/%: $(static)/%
+	ditto $< $@
+static-files: $(static_files)
 
 
 index := $(docset)/Contents/Resources/docSet.dsidx
