@@ -10,7 +10,7 @@ docset := $(build)/$(docset_name)
 docset_html := $(docset)/Contents/Resources/Documents
 
 all_published_docs := $(vendor)/ramdajs.com
-version := 0.17
+version := 0.18.0
 published_docs := $(all_published_docs)/$(version)
 
 
