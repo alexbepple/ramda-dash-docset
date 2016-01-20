@@ -5,6 +5,7 @@ require! {
 }
 
 removeBuildStatusEtc = ($) -> $('article p').has('a[href*="travis-ci"]').remove()
+removeNavCheckbox = ($) -> $('#open-nav').remove()
 useLocalLogo = ($) ->
     $('img[src*=ramdaFilled]').attr('src', 'logo.png')
 
