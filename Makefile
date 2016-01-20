@@ -24,15 +24,11 @@ clean:
 build: static-files files-from-published_docs logo homepage api-page index
 
 
-all_published_docs_archive := $(all_published_docs).tar.gz
-$(all_published_docs_archive):
-	mkdir -p `dirname $@`
-	wget https://github.com/ramda/ramda.github.io/tarball/master -O $@
-$(all_published_docs): $(all_published_docs_archive)
-	mkdir -p $@
-	tar -xzf $< --strip-components=1 --directory $@
-.PHONY: all-published-docs
+$(all_published_docs):
+	peru sync
 all-published-docs: $(all_published_docs)
+update-all-published-docs:
+	peru reup
 
 
 files_from_published_docs := style.css docs/main.js docs/dist/ramda.js fonts/glyphicons-halflings-regular.woff
@@ -43,10 +39,9 @@ files-from-published_docs: $(files_from_published_docs)
 
 logo_name := logo.png
 logo := $(docset_html)/$(logo_name)
-downloaded_logo := $(vendor)/$(logo_name)
+downloaded_logo := $(vendor)/ramdaFilled_200x235.png
 $(downloaded_logo):
-	mkdir -p `dirname $@`
-	wget http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png -O $@
+	peru sync
 $(logo): $(downloaded_logo)
 	ditto $< $@
 logo: $(logo)

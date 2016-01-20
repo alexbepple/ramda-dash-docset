@@ -1,4 +1,7 @@
-node_modules/
-build/
-vendor/
-tmp/
+/.peru/
+/vendor/
+/node_modules/
+
+/build/
+
+/tmp/
