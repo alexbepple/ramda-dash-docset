@@ -2,6 +2,7 @@
 ## Generate docset
 
 Get Node.
+Get [peru](https://github.com/buildinspace/peru).
 
     npm install
     make prod
