@@ -42,5 +42,5 @@ docs = $(all_docs)/$(version)
 
 
 # archive
-    : {docset} |> tar -cvzf %o %f |> Ramda.tgz
+    : {docset} |> ^ create %o^ tar -czf %o %f |> Ramda.tgz
 
