@@ -5,6 +5,7 @@ init: published-docs
 	npm install
 	pip3 install -r requirements.txt
 	tup init
+	tup variant *.config
 
 published-docs:
 	peru sync
@@ -15,5 +16,5 @@ build:
 	tup
 
 install:
-	open build-dev/Ramda.docset
+	open build-*/Ramda.docset
 
