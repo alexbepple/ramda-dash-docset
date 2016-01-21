@@ -12,15 +12,15 @@ all_docs = $(vendor)/ramdajs.com
 docs = $(all_docs)/$(version)
 
 
-!generate-homepage = |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |>
+!generate-homepage = |> ^o generate homepage^ $(lsc) $(lib)/generate-homepage %f %o |>
     : $(docs)/index.html |> !generate-homepage |> $(documents)/%b {docset}
 
-!generate-api-page = |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |>
+!generate-api-page = |> ^o generate API page^ $(lsc) $(lib)/generate-api-page %f %o |>
     api_page_subpath = docs/index.html
     api_page = $(documents)/$(api_page_subpath)
     : $(docs)/$(api_page_subpath) |> !generate-api-page |> $(api_page) {docset}
 
-!generate-index = |> ^o^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
+!generate-index = |> ^o generate index^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
     : $(api_page) |> !generate-index |> {docset}
 
 
@@ -37,7 +37,7 @@ docs = $(all_docs)/$(version)
     : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(documents)/logo.png {docset}
 
 
-!run-tests = |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
+!run-tests = |> ^ run tests^ DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
     : {docset} |> !run-tests |>
 
 # archive
