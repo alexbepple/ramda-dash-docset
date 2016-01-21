@@ -1,0 +1,10 @@
+#! /bin/sh -e
+
+source="$1"
+target="$2"
+
+cd "$source"
+for subpath in `find . -type f | sed "s|^\./||"` ; do
+    #echo $subpath
+    echo ": $source/$subpath |> cp %f %o |> $target/$subpath {docset}"
+done
