@@ -3,14 +3,15 @@
 
 Get Node.
 Get [peru](https://github.com/buildinspace/peru).
+Then run:
 
-    npm install
-    make prod
+    $ make init
+    $ make
 
 Only tested on Mac.
 
 
-### Build setup
+### Node versions
 
 I could build with
 
@@ -24,10 +25,10 @@ I could not build with
 
 ## Update version
 
-* Change version in `Makefile`.
-* `make -B all-published-docs`
+* `make update-published-docs`
+* Change version in `Tupfile`.
 * Generate docset.
-    * Most likely, the number of functions will change.
+    * Most likely, the number of functions will change. Fix it in `check/docset_spec.ls`
 
 
 ## Icon

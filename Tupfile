@@ -1,0 +1,47 @@
+version := 0.19.0
+
+bin := ./node_modules/.bin
+lsc := $(bin)/lsc
+
+lib := lib
+
+docset := Ramda.docset
+docset_html := $(docset)/Contents/Resources/Documents
+
+vendor := vendor
+all_published_docs := $(vendor)/ramdajs.com
+published_docs := $(all_published_docs)/$(version)
+
+
+# generate homepage
+    : $(published_docs)/index.html |> $(lsc) $(lib)/generate-homepage %f %o |> $(docset_html)/index.html {docset}
+
+# generate api page
+    api_page_subpath := docs/index.html
+    api_page := $(docset_html)/$(api_page_subpath)
+    : $(published_docs)/$(api_page_subpath) |> $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
+
+# generate index
+    : $(api_page) |> $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx {docset}
+
+
+# copy static assets from repo
+    : foreach static/* |> cp %f %o |> $(docset)/%b {docset}
+    : foreach static/Contents/* |> cp %f %o |> $(docset)/Contents/%b {docset}
+
+
+# copy downloaded assets
+    : $(published_docs)/style.css |> cp %f %o |> $(docset_html)/%b {docset}
+    : $(published_docs)/docs/main.js |> cp %f %o |> $(docset_html)/docs/%b {docset}
+    : $(published_docs)/docs/dist/ramda.js |> cp %f %o |> $(docset_html)/docs/dist/%b {docset}
+    : $(published_docs)/fonts/glyphicons-halflings-regular.woff |> cp %f %o |> $(docset_html)/fonts/%b {docset}
+
+    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_html)/logo.png {docset}
+
+# test
+    : {docset} |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
+
+
+# archive
+    : {docset} |> tar -cvzf %o %f |> Ramda.tgz
+
