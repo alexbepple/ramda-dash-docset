@@ -1,8 +1,12 @@
 
 ## Generate docset
 
-Get Node.
-Get [peru](https://github.com/buildinspace/peru).
+Install system requirements:
+
+* Node, see below for version info
+* Python3
+* [tup](http://gittup.org/tup)
+
 Then run:
 
     $ make init
@@ -28,7 +32,7 @@ I could not build with
 * `make update-published-docs`
 * Change version in `Tupfile`.
 * Generate docset.
-    * Most likely, the number of functions will change. Fix it in `check/docset_spec.ls`
+    * Most likely, the number of functions will change. Change it in `check/docset_spec.ls`
 
 
 ## Icon
