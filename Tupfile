@@ -30,21 +30,15 @@ docs = $(all_docs)/$(version)
 
 
 # copy downloaded assets
-!copy-to-documents =  |> cp %f %o |> $(documents)/$(path)
-    path = style.css
-    : $(docs)/$(path) |> !copy-to-documents |> {docset}
-    path = docs/main.js
-    : $(docs)/$(path) |> !copy-to-documents |> {docset}
-    path = docs/dist/ramda.js
-    : $(docs)/$(path) |> !copy-to-documents |> {docset}
-    path = fonts/glyphicons-halflings-regular.woff
-    : $(docs)/$(path) |> !copy-to-documents |> {docset}
+    assets = style.css docs/main.js docs/dist/ramda.js
+    assets += fonts/glyphicons-halflings-regular.woff
+    run ./copy_from_docs_to_documents $(assets)
 
     : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(documents)/logo.png {docset}
 
+
 !run-tests = |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
     : {docset} |> !run-tests |>
-
 
 # archive
     : {docset} |> ^ create %o^ tar -czf %o %f |> Ramda.tgz
