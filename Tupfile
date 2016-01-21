@@ -1,25 +1,24 @@
-version := 0.19.0
+version = 0.19.0
 
-bin := ./node_modules/.bin
-lsc := $(bin)/lsc
+bin = ./node_modules/.bin
+lsc = $(bin)/lsc
+lib = lib
 
-lib := lib
+docset = Ramda.docset
+documents = $(docset)/Contents/Resources/Documents
 
-docset := Ramda.docset
-docset_html := $(docset)/Contents/Resources/Documents
-
-vendor := vendor
-all_published_docs := $(vendor)/ramdajs.com
-published_docs := $(all_published_docs)/$(version)
+vendor = vendor
+all_docs = $(vendor)/ramdajs.com
+docs = $(all_docs)/$(version)
 
 
 # generate homepage
-    : $(published_docs)/index.html |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |> $(docset_html)/index.html {docset}
+    : $(docs)/index.html |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |> $(documents)/%b {docset}
 
 # generate api page
-    api_page_subpath := docs/index.html
-    api_page := $(docset_html)/$(api_page_subpath)
-    : $(published_docs)/$(api_page_subpath) |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
+    api_page_subpath = docs/index.html
+    api_page = $(documents)/$(api_page_subpath)
+    : $(docs)/$(api_page_subpath) |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
 
 # generate index
     : $(api_page) |> ^o^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx {docset}
@@ -31,12 +30,12 @@ published_docs := $(all_published_docs)/$(version)
 
 
 # copy downloaded assets
-    : $(published_docs)/style.css |> cp %f %o |> $(docset_html)/%b {docset}
-    : $(published_docs)/docs/main.js |> cp %f %o |> $(docset_html)/docs/%b {docset}
-    : $(published_docs)/docs/dist/ramda.js |> cp %f %o |> $(docset_html)/docs/dist/%b {docset}
-    : $(published_docs)/fonts/glyphicons-halflings-regular.woff |> cp %f %o |> $(docset_html)/fonts/%b {docset}
+    : $(docs)/style.css |> cp %f %o |> $(documents)/%b {docset}
+    : $(docs)/docs/main.js |> cp %f %o |> $(documents)/docs/%b {docset}
+    : $(docs)/docs/dist/ramda.js |> cp %f %o |> $(documents)/docs/dist/%b {docset}
+    : $(docs)/fonts/glyphicons-halflings-regular.woff |> cp %f %o |> $(documents)/fonts/%b {docset}
 
-    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_html)/logo.png {docset}
+    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(documents)/logo.png {docset}
 
 # test
     : {docset} |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
