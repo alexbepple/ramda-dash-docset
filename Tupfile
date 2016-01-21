@@ -12,16 +12,16 @@ all_docs = $(vendor)/ramdajs.com
 docs = $(all_docs)/$(version)
 
 
-# generate homepage
-    : $(docs)/index.html |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |> $(documents)/%b {docset}
+!generate-homepage = |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |>
+    : $(docs)/index.html |> !generate-homepage |> $(documents)/%b {docset}
 
-# generate api page
+!generate-api-page = |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |>
     api_page_subpath = docs/index.html
     api_page = $(documents)/$(api_page_subpath)
-    : $(docs)/$(api_page_subpath) |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
+    : $(docs)/$(api_page_subpath) |> !generate-api-page |> $(api_page) {docset}
 
-# generate index
-    : $(api_page) |> ^o^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx {docset}
+!generate-index = |> ^o^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
+    : $(api_page) |> !generate-index |> {docset}
 
 
 # copy static assets from repo
@@ -30,20 +30,20 @@ docs = $(all_docs)/$(version)
 
 
 # copy downloaded assets
-!copy_to_documents =  |> cp %f %o |> $(documents)/$(path)
+!copy-to-documents =  |> cp %f %o |> $(documents)/$(path)
     path = style.css
-    : $(docs)/$(path) |> !copy_to_documents |> {docset}
+    : $(docs)/$(path) |> !copy-to-documents |> {docset}
     path = docs/main.js
-    : $(docs)/$(path) |> !copy_to_documents |> {docset}
+    : $(docs)/$(path) |> !copy-to-documents |> {docset}
     path = docs/dist/ramda.js
-    : $(docs)/$(path) |> !copy_to_documents |> {docset}
+    : $(docs)/$(path) |> !copy-to-documents |> {docset}
     path = fonts/glyphicons-halflings-regular.woff
-    : $(docs)/$(path) |> !copy_to_documents |> {docset}
+    : $(docs)/$(path) |> !copy-to-documents |> {docset}
 
     : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(documents)/logo.png {docset}
 
-# test
-    : {docset} |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
+!run-tests = |> DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
+    : {docset} |> !run-tests |>
 
 
 # archive
