@@ -14,15 +14,15 @@ published_docs := $(all_published_docs)/$(version)
 
 
 # generate homepage
-    : $(published_docs)/index.html |> $(lsc) $(lib)/generate-homepage %f %o |> $(docset_html)/index.html {docset}
+    : $(published_docs)/index.html |> ^o^ $(lsc) $(lib)/generate-homepage %f %o |> $(docset_html)/index.html {docset}
 
 # generate api page
     api_page_subpath := docs/index.html
     api_page := $(docset_html)/$(api_page_subpath)
-    : $(published_docs)/$(api_page_subpath) |> $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
+    : $(published_docs)/$(api_page_subpath) |> ^o^ $(lsc) $(lib)/generate-api-page %f %o |> $(api_page) {docset}
 
 # generate index
-    : $(api_page) |> $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx {docset}
+    : $(api_page) |> ^o^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx {docset}
 
 
 # copy static assets from repo
