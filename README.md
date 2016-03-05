@@ -6,6 +6,7 @@ Install system requirements:
 * Node, see below for version info
 * Python3
 * [tup](http://gittup.org/tup)
+* [peru](https://github.com/buildinspace/peru) (automatically `pip3`-installed)
 
 Then run:
 
