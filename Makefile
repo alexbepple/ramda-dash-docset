@@ -1,9 +1,11 @@
 
 .DEFAULT_GOAL = build
 
-init: published-docs
-	npm install
+dependencies:
 	pip3 install -r requirements.txt
+
+init: dependencies published-docs
+	npm install
 	tup init
 	tup variant *.config
 
