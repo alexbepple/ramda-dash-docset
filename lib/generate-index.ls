@@ -29,7 +29,7 @@ extractCategoriesWithFirstFunction = (apiHtml) ->
     toFirstFunctionPerCategory = r.pipe(
         r.map toCategoryAndFunction
         r.groupBy r.prop('category')
-        r.mapObj toNameOfFirstFunction
+        r.map toNameOfFirstFunction
     )
 
     $ = cheerio.load apiHtml
