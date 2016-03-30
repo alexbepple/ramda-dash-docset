@@ -3,7 +3,7 @@
 
 Install system requirements:
 
-* Node, see below for version info
+* Node, cp. `.node-version`
 * Python3
 * [tup](http://gittup.org/tup)
 
@@ -15,21 +15,9 @@ Then run:
 Only tested on Mac.
 
 
-### Node versions
-
-I could build with
-
-* node v0.12.9 (npm v2.14.9)
-
-I could not build with
-
-* node v5.3.0 (npm v2.14.15)
-* node v5.4.1 (npm v3.3.12)
-
-
 ## Update version
 
-* `make update-published-docs`
+* `make update_published_docs`
 * Change version in `Tupfile`.
 * Generate docset.
     * Most likely, the number of functions will change. Change it in `check/docset_spec.ls`
@@ -38,3 +26,4 @@ I could not build with
 ## Icon
 
 Generated from <http://ramda.jcphillipps.com/logo/ramdaFilled.svg> using [iConvert](http://iconverticons.com/online/).
+
