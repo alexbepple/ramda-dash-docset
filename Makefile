@@ -1,7 +1,14 @@
 
 .DEFAULT_GOAL = build
 
-init: published-docs
+variant := default
+build_dir := build-$(variant)
+
+clean_tup:
+	rm -rf .tup
+	rm -rf $(build_dir)
+
+init: clean_tup published-docs
 	npm install
 	pip3 install -r requirements.txt
 	tup init
@@ -16,5 +23,5 @@ build:
 	tup
 
 install:
-	open build-*/Ramda.docset
+	open $(build_dir)/Ramda.docset
 
