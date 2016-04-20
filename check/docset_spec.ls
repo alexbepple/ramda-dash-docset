@@ -29,7 +29,7 @@ describe 'Index' ->
         err, row <- db.get 'select count(*) from searchIndex where type = "Function";'
         if err then throw err
         noOfFunctions = row[keys row |> head]
-        expect noOfFunctions .to.equal 234
+        expect noOfFunctions .to.equal 235
         done!
 
     specify 'contains all the categories', (done) ->
@@ -37,6 +37,6 @@ describe 'Index' ->
         err, row <- db.get 'select count(*) from searchIndex where type = "Category";'
         if err then throw err
         noOfCategories = row[keys row |> head]
-        expect noOfCategories .to.equal 9
+        expect noOfCategories .to.equal 8
         done!
 

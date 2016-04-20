@@ -4,7 +4,7 @@ imports:
 
 git module docs:
     url: https://github.com/ramda/ramda.github.io.git
-    rev: 4ffed61e755c7f33b091d02a9a61665625e3e37b
+    rev: 4eb602cd34a251fb855afc7949b5d5b6f741628a
 
 curl module logo:
     url: http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png
