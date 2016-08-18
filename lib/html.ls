@@ -10,6 +10,7 @@ unlinkLibraryName = ($) -> $('a.navbar-brand').attr 'href', null
 
 defaultActions = [
     remove '.navbar-left'
+    remove 'header.navbar label.open-nav'
     unlinkLibraryName
 ]
 process = (actions) ->
