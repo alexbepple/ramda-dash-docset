@@ -23,6 +23,7 @@ docs = $(all_docs)/$(version)
 !generate-index = |> ^o generate index^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
     : $(api_page) |> !generate-index |> {docset}
 
+: $(docs)/docs/main.js |> sed -e "s/location.origin/'http:\/\/ramdajs.com'/g" %f > %o |> $(documents)/docs/main.js
 
 # copy static assets from repo
     preload static static/Contents
@@ -30,7 +31,7 @@ docs = $(all_docs)/$(version)
 
 
 # copy downloaded assets
-    assets = style.css docs/main.js docs/dist/ramda.js
+    assets = style.css docs/dist/ramda.js
     assets += fonts/glyphicons-halflings-regular.woff
     run ./copy_from_docs_to_documents $(assets)
 
