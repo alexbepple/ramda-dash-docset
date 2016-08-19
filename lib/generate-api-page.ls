@@ -2,6 +2,7 @@ require! {
     ramda:r
     './util': u
     './html'
+    './dash'
 }
 
 removeLeftMarginForMainContent = ($) -> $('main').css 'left', '0'
@@ -12,6 +13,7 @@ reorderFunctionsByCategory = ($) ->
     $('main') .empty() .append reorderByCategory(allEntries)
 
 actions = [
+    dash.referToOnlinePage 'http://ramdajs.com/docs/'
     html.hide '.sidebar'
     removeLeftMarginForMainContent
     reorderFunctionsByCategory
