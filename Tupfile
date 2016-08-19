@@ -5,27 +5,27 @@ lsc = $(bin)/lsc
 lib = lib
 
 docset = Ramda.docset
-documents = $(docset)/Contents/Resources/Documents
+docset_docs = $(docset)/Contents/Resources/Documents
 
 vendor = vendor
 all_docs = $(vendor)/ramdajs.com
-docs = $(all_docs)/$(version)
+website_docs = $(all_docs)/$(version)
 
 
 !generate-homepage = |> ^o generate homepage^ $(lsc) $(lib)/generate-homepage %f %o |>
-    : $(docs)/index.html |> !generate-homepage |> $(documents)/%b {docset}
+    : $(website_docs)/index.html |> !generate-homepage |> $(docset_docs)/%b {docset}
 
 !generate-api-page = |> ^o generate API page^ $(lsc) $(lib)/generate-api-page %f %o |>
     api_page_subpath = docs/index.html
-    api_page = $(documents)/$(api_page_subpath)
-    : $(docs)/$(api_page_subpath) |> !generate-api-page |> $(api_page) {docset}
+    api_page = $(docset_docs)/$(api_page_subpath)
+    : $(website_docs)/$(api_page_subpath) |> !generate-api-page |> $(api_page) {docset}
 
 !generate-index = |> ^o generate index^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
     : $(api_page) |> !generate-index |> {docset}
 
 !generate-main-js = |> ^o generate main.js^ sed -e "s/location.origin/'http:\/\/ramdajs.com'/g" %f > %o |>
     main_js_subpath = docs/main.js
-    : $(docs)/$(main_js_subpath) |> !generate-main-js |> $(documents)/$(main_js_subpath)
+    : $(website_docs)/$(main_js_subpath) |> !generate-main-js |> $(docset_docs)/$(main_js_subpath)
 
 
 # copy static assets from repo
@@ -36,9 +36,9 @@ docs = $(all_docs)/$(version)
 # copy downloaded assets
     assets = style.css docs/dist/ramda.js
     assets += fonts/glyphicons-halflings-regular.woff
-    run ./copy_from_docs_to_documents $(assets)
+    run ./copy_from_website_docs_to_docset $(assets)
 
-    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(documents)/logo.png {docset}
+    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}
 
 
 !run-tests = |> ^ run tests^ DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
