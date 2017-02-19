@@ -25,11 +25,15 @@ update_published_docs:
 
 builder:
 	docker build -t tup .
-	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c 'make init'
+	$(MAKE) in_builder cmd='make init'
 
 build:
-	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c 'tup'
+	$(MAKE) in_builder cmd=tup
 
 install:
 	open $(build_dir)/Ramda.docset
+
+cmd = tup
+in_builder:
+	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c '$(cmd)'
 
