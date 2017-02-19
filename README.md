@@ -3,6 +3,7 @@
 
     $ make builder
     $ make
+    $ make install
 
 Only tested on macOS. However, it should work in any Docker environment.
 

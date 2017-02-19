@@ -5,6 +5,26 @@ variant := default
 build_dir := build-$(variant)
 pwd := $(shell pwd)
 
+
+##############
+# Get started
+##############
+
+builder:
+	docker build -t tup .
+	$(MAKE) in_builder cmd='make init'
+
+build:
+	$(MAKE) in_builder cmd=tup
+
+install:
+	open $(build_dir)/Ramda.docset
+
+
+##################
+# Building blocks
+##################
+
 clean_tup:
 	rm -rf .tup
 	rm -rf $(build_dir)
@@ -22,16 +42,6 @@ get_published_docs:
 	peru sync
 update_published_docs:
 	peru reup
-
-builder:
-	docker build -t tup .
-	$(MAKE) in_builder cmd='make init'
-
-build:
-	$(MAKE) in_builder cmd=tup
-
-install:
-	open $(build_dir)/Ramda.docset
 
 cmd = tup
 in_builder:
