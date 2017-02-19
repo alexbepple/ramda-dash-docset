@@ -1,21 +1,15 @@
 
 ## Generate docset
 
-Install system requirements:
-
-* Node, cp. `.node-version`
-* Python3
-* [tup](http://gittup.org/tup)
-
-Then run:
-
-    $ make init
+    $ make builder
     $ make
 
-Only tested on Mac.
+Only tested on macOS. However, it should work in any Docker environment.
 
 
 ## Update version
+
+**This will need updating for Docker …**
 
 * `make update_published_docs`
 * Change version in `Tupfile`.

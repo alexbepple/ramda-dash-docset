@@ -3,6 +3,7 @@
 
 variant := default
 build_dir := build-$(variant)
+pwd := $(shell pwd)
 
 clean_tup:
 	rm -rf .tup
@@ -14,7 +15,6 @@ init_tup:
 
 install_dependencies:
 	npm install
-	pip3 install -r requirements.txt
 
 init: install_dependencies clean_tup init_tup get_published_docs
 
@@ -23,8 +23,12 @@ get_published_docs:
 update_published_docs:
 	peru reup
 
+builder:
+	docker build -t tup .
+	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c 'make init'
+
 build:
-	tup
+	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c 'tup'
 
 install:
 	open $(build_dir)/Ramda.docset
