@@ -21,6 +21,15 @@ install:
 	open $(build_dir)/Ramda.docset
 
 
+
+##############
+# More
+##############
+
+build_continuously:
+	$(MAKE) in_builder cmd='tup monitor --foreground --autoupdate'
+
+
 ##################
 # Building blocks
 ##################
