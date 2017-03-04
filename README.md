@@ -1,4 +1,13 @@
 
+## Features
+
+
+* All original content from http://ramdajs.com/
+* No fluff that is not central to the docset functionality. This excludes build status, chats and whatever else is on the main page.
+
+* "Expand/collapse parameters" for parameter description.
+
+
 ## Generate docset
 
     $ make builder
@@ -9,8 +18,6 @@ Only tested on macOS. However, it should work in any Docker environment.
 
 
 ## Update version
-
-**This will need updating for Docker …**
 
 * `make update_published_docs`
 * Change version in `Tupfile`.

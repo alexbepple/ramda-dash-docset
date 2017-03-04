@@ -1,4 +1,4 @@
-version = 0.22.1
+version = 0.23.0
 
 bin = ./node_modules/.bin
 lsc = $(bin)/lsc
@@ -35,7 +35,6 @@ website_docs = $(all_docs)/$(version)
 
 # copy downloaded assets
     assets = style.css docs/dist/ramda.js
-    assets += fonts/glyphicons-halflings-regular.woff
     run ./copy_from_website_docs_to_docset $(assets)
 
     : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}

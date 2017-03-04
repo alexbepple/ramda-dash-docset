@@ -5,18 +5,36 @@ require! {
     './dash'
 }
 
-removeLeftMarginForMainContent = ($) -> $('main').css 'left', '0'
+
+removeLeftMarginForMainContent = ($) -> $('main').css 'margin-left', '0'
+
+offsetFunctionAnchorSoThatTopBorderIsVisible = ($) -> $('.section-id').css 'top', '-80px'
+
+removeLinkAnchorsToPreventJumpingToTop = ($) ->
+    $('.toggle-params').removeAttr('href').css('cursor', 'pointer')
+
 reorderFunctionsByCategory = ($) ->
-    allEntries = $('main section').get()
-    categoryName = -> $(it).find('.label-category').text()
-    reorderByCategory = r.pipe r.groupBy(categoryName), r.values, r.flatten
-    $('main') .empty() .append reorderByCategory(allEntries)
+    getCategoryName = -> $(it).find('.label-category').text()
+    getFunctionName = -> $(it).find('a.name').text()
+
+    allFunctionSections = $('main section').get()
+    reorderByCategory = r.pipe r.groupBy(getCategoryName), r.values, r.flatten
+
+    addAnchor = -> $(it).prepend("<div id='#{getFunctionName(it)}' class='section-id'></div>")
+
+    processFunctionSections = r.pipe(
+        r.map(addAnchor),
+        reorderByCategory
+    )
+    $('main') .empty() .append processFunctionSections(allFunctionSections)
 
 actions = [
     dash.referToOnlinePage 'http://ramdajs.com/docs/'
     html.hide '.sidebar'
     removeLeftMarginForMainContent
     reorderFunctionsByCategory
+    offsetFunctionAnchorSoThatTopBorderIsVisible
+    removeLinkAnchorsToPreventJumpingToTop
 ]
 
 

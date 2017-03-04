@@ -50,7 +50,7 @@ init: install_dependencies clean_tup init_tup get_published_docs
 get_published_docs:
 	peru sync
 update_published_docs:
-	peru reup
+	$(MAKE) in_builder cmd='peru reup'
 
 cmd = tup
 in_builder:

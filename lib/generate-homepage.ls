@@ -8,10 +8,12 @@ require! {
 removeBuildStatusEtc = ($) -> $('article p').has('a[href*="travis-ci"]').remove()
 useLocalLogo = ($) ->
     $('img[src*=ramdaFilled]').attr('src', 'logo.png')
+removeGitterLink = ($) -> $('script').remove()
 
 actions = [
     dash.referToOnlinePage 'http://ramdajs.com/'
     removeBuildStatusEtc
+    removeGitterLink
     useLocalLogo
 ]
 

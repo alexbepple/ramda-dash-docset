@@ -8,7 +8,7 @@ hide = (selector, $) --> $(selector).css 'display', 'none'
 
 unlinkLibraryName = ($) -> $('a.navbar-brand').attr 'href', null
 
-removeMenuItems = remove 'header.navbar .navbar-left'
+removeMenuItems = remove 'header.navbar .navbar-nav'
 removeMenuIcon = remove 'header.navbar label.open-nav'
 
 defaultActions = [
