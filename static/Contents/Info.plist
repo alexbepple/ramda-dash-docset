@@ -10,9 +10,11 @@
 	<string>ramda</string>
 	<key>isDashDocset</key>
 	<true/>
-    <key>isJavaScriptEnabled</key>
-    <true/>
-    <key>dashIndexFilePath</key>
-    <string>index.html</string>
+  <key>isJavaScriptEnabled</key>
+  <true/>
+  <key>dashIndexFilePath</key>
+  <string>index.html</string>
+  <key>DashDocSetPlayURL</key>
+  <string>http://ramdajs.com/repl/?v=0.23.0</string>
 </dict>
 </plist>
