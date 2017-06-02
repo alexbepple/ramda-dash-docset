@@ -1,4 +1,4 @@
-version = 0.23.0
+version = 0.24.1
 
 bin = ./node_modules/.bin
 lsc = $(bin)/lsc
