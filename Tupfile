@@ -40,7 +40,7 @@ website_docs = $(all_docs)/$(version)
     : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}
 
 
-!fill-ramda-version = |> ^o create Info.plist^ sed 's|{{ramda_version}}|$(version)|' %f > %o |>
+!fill-ramda-version = |> ^o fill Ramda version^ sed 's|{{ramda_version}}|$(version)|' %f > %o |>
     info_plist_path = Contents/Info.plist
     : templates/$(info_plist_path) |> !fill-ramda-version |> $(docset)/$(info_plist_path) {docset}
 
