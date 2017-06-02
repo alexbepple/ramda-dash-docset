@@ -10,5 +10,5 @@ indent_style = space
 indent_size = 4
 
 
-[Makefile]
+[{Makefile,Info.plist}]
 indent_style = tab
