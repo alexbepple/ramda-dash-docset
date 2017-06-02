@@ -15,6 +15,6 @@
 	<key>dashIndexFilePath</key>
 	<string>index.html</string>
 	<key>DashDocSetPlayURL</key>
-	<string>http://ramdajs.com/repl/?v=0.23.0</string>
+	<string>http://ramdajs.com/repl/?v=0.24.1</string>
 </dict>
 </plist>

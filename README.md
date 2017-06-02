@@ -20,7 +20,9 @@ Only tested on macOS. However, it should work in any Docker environment.
 ## Update version
 
 * `make update_published_docs`
-* Change version in `Tupfile`.
+* Change version in:
+    * `Tupfile`
+    * `static/Contents/Info.plist`
 * Generate docset.
     * Most likely, the number of functions will change. Change it in `check/docset_spec.ls`
 
