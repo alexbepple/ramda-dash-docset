@@ -10,6 +10,10 @@
 
 ## Generate docset
 
+The only requirement should be Docker. If the build needs anything else, consider it a bug.
+
+Run
+
     $ make builder
     $ make
     $ make install
