@@ -48,6 +48,3 @@ website_docs = $(all_docs)/$(version)
 !run-tests = |> ^ run tests^ DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
     : {docset} |> !run-tests |>
 
-# archive
-    : {docset} |> ^ create %o^ tar -czf %o %f |> Ramda.tgz
-

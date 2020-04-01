@@ -33,3 +33,7 @@ Only tested on macOS. However, it should work in any Docker environment.
 
 Generated from <http://ramda.jcphillipps.com/logo/ramdaFilled.svg> using [iConvert](http://iconverticons.com/online/).
 
+
+## Manual tests
+
+* "Open in REPL" (… `main.js` …)

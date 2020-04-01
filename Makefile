@@ -1,5 +1,5 @@
 
-.DEFAULT_GOAL = build
+.DEFAULT_GOAL = build_in_builder
 
 variant := default
 build_dir := build-$(variant)
@@ -14,8 +14,8 @@ builder:
 	docker build -t tup .
 	$(MAKE) in_builder cmd='make init'
 
-build:
-	$(MAKE) in_builder cmd=tup
+build_in_builder:
+	$(MAKE) in_builder cmd='make build'
 
 install:
 	open $(build_dir)/Ramda.docset
@@ -55,7 +55,15 @@ update_published_docs:
 	git checkout master
 	git pull
 
+_archive:
+	# GZIP=-n and --sort=name seem to make it reproducible in this case
+	# but may not be enough, cp. https://reproducible-builds.org/docs/archives/
+	cd $(build_dir) && GZIP=-n tar --sort=name -czf Ramda.tgz Ramda.docset
+
+build:
+	tup
+	$(MAKE) _archive
+
 cmd = tup
 in_builder:
 	docker run -it --rm -v $(pwd):/app --privileged tup /bin/sh -c '$(cmd)'
-
