@@ -1,0 +1,3 @@
+[submodule "vendor/ramda.github.io"]
+	path = vendor/ramda.github.io
+	url = https://github.com/ramda/ramda.github.io.git

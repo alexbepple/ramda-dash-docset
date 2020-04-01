@@ -48,9 +48,12 @@ install_dependencies:
 init: install_dependencies clean_tup init_tup get_published_docs
 
 get_published_docs:
-	peru sync
+	git submodule init
+	git submodule update
 update_published_docs:
-	$(MAKE) in_builder cmd='peru reup'
+	cd vendor/ramda.github.io
+	git checkout master
+	git pull
 
 cmd = tup
 in_builder:

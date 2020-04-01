@@ -8,7 +8,7 @@ docset = Ramda.docset
 docset_docs = $(docset)/Contents/Resources/Documents
 
 vendor = vendor
-all_docs = $(vendor)/ramdajs.com
+all_docs = $(vendor)/ramda.github.io
 website_docs = $(all_docs)/$(version)
 
 
@@ -37,7 +37,7 @@ website_docs = $(all_docs)/$(version)
     assets = style.css docs/dist/ramda.js
     run ./copy_from_website_docs_to_docset $(assets)
 
-    : $(vendor)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}
+    : $(all_docs)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}
 
 
 !fill-ramda-version = |> ^o fill Ramda version^ sed 's|{{ramda_version}}|$(version)|' %f > %o |>

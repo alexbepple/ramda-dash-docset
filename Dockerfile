@@ -11,19 +11,5 @@ RUN apt-get install -y kmod fuse
 RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
 RUN apt-get install -y nodejs
 
-RUN apt-get install -y python3-pip
-
 RUN mkdir /app
 WORKDIR /app
-
-ADD requirements.txt .
-RUN pip3 install -r requirements.txt
-
-#ADD npm-shrinkwrap.json package.json ./
-#RUN npm install
-
-#ADD peru.yaml Makefile ./
-#RUN make get_published_docs
-
-#ADD . .
-
