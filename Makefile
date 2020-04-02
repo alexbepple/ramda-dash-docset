@@ -88,7 +88,10 @@ main_js_path := docs/main.js
 _create_main_js:
 	sed -e "s/location.origin/'http:\/\/ramdajs.com'/g" $(original_docs)/$(main_js_path) > $(docset_docs)/$(main_js_path)
 
-_compile: _create_info_plist _create_main_js
+_create_homepage:
+	$(lsc) $(lib)/generate-homepage $(original_docs)/index.html $(docset_docs)/index.html
+
+_compile: _create_info_plist _create_main_js _create_homepage
 
 # cp. https://github.com/source-foundry/Hack/issues/401#issuecomment-397102332
 SOURCE_DATE_EPOCH := $(shell git show -s --format=%ct HEAD)
