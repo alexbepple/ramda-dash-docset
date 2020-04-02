@@ -1,9 +1,6 @@
 version = 0.27.0
 
-.DEFAULT_GOAL = build_in_builder
-
-build_dir := build
-pwd := $(shell pwd)
+.DEFAULT_GOAL = clean_build_in_builder
 image_name := ramda_docset_builder
 
 ##############
@@ -14,8 +11,8 @@ builder:
 	docker build -t $(image_name) .
 	$(MAKE) in_builder cmd='make init'
 
-build_in_builder:
-	$(MAKE) in_builder cmd='make build'
+clean_build_in_builder:
+	$(MAKE) in_builder cmd='make clean build'
 
 install:
 	open $(build_dir)/Ramda.docset
@@ -25,13 +22,10 @@ install:
 # Building blocks
 ##################
 
-clean_tup:
-	rm -rf $(build_dir)
-
 install_dependencies:
 	npm install
 
-init: install_dependencies clean_tup get_published_docs
+init: install_dependencies get_published_docs
 
 get_published_docs:
 	git submodule init
@@ -42,7 +36,7 @@ update_published_docs:
 	git pull
 
 in_builder:
-	docker run -it --rm -v $(pwd):/app $(image_name) /bin/sh -c '$(cmd)'
+	docker run -it --rm -v $(shell pwd):/app $(image_name) /bin/sh -c '$(cmd)'
 
 
 #############
@@ -56,8 +50,12 @@ lib = lib
 all_original_docs := vendor/ramda.github.io
 original_docs = $(all_original_docs)/$(version)
 
+build_dir := build
 docset = $(build_dir)/Ramda.docset
 docset_docs = $(docset)/Contents/Resources/Documents
+
+clean:
+	rm -rf $(build_dir)
 
 _copy_resources:
 	mkdir -p $(docset)
