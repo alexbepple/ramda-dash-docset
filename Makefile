@@ -1,7 +1,13 @@
 version = 0.27.0
 
 .DEFAULT_GOAL = clean_build_in_builder
+
 image_name := ramda_docset_builder
+
+build_dir := build
+docset_dirname := Ramda.docset
+docset = $(build_dir)/$(docset_dirname)
+
 
 ##############
 # Get started
@@ -15,7 +21,7 @@ clean_build_in_builder:
 	$(MAKE) in_builder cmd='make clean build'
 
 install:
-	open $(build_dir)/Ramda.docset
+	open $(docset)
 
 
 ##################
@@ -50,8 +56,6 @@ lib = lib
 all_original_docs := vendor/ramda.github.io
 original_docs = $(all_original_docs)/$(version)
 
-build_dir := build
-docset = $(build_dir)/Ramda.docset
 docset_docs = $(docset)/Contents/Resources/Documents
 
 clean:
@@ -96,7 +100,7 @@ _archive:
       --mtime="@${SOURCE_DATE_EPOCH}" \
       --owner=0 --group=0 --numeric-owner \
       --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
-	  -czf Ramda.tgz Ramda.docset
+	  -czf Ramda.tgz $(docset_dirname)
 
 _test:
 	DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter
