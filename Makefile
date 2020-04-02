@@ -2,8 +2,7 @@ version = 0.27.0
 
 .DEFAULT_GOAL = build_in_builder
 
-variant := default
-build_dir := build-$(variant)
+build_dir := build
 pwd := $(shell pwd)
 image_name := ramda_docset_builder
 
@@ -42,6 +41,13 @@ update_published_docs:
 	git checkout master
 	git pull
 
+in_builder:
+	docker run -it --rm -v $(pwd):/app $(image_name) /bin/sh -c '$(cmd)'
+
+
+#############
+# Core build
+#############
 
 bin := ./node_modules/.bin
 lsc = $(bin)/lsc
@@ -100,6 +106,3 @@ _test:
 build: _copy_resources _compile
 	$(MAKE) _test
 	$(MAKE) _archive
-
-in_builder:
-	docker run -it --rm -v $(pwd):/app $(image_name) /bin/sh -c '$(cmd)'
