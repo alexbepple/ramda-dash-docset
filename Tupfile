@@ -27,13 +27,6 @@ website_docs = $(all_docs)/$(version)
     main_js_subpath = docs/main.js
     : $(website_docs)/$(main_js_subpath) |> !generate-main-js |> $(docset_docs)/$(main_js_subpath)
 
-# copy downloaded assets
-    assets = style.css docs/dist/ramda.js
-    run ./copy_from_website_docs_to_docset $(assets)
-
-    : $(all_docs)/ramdaFilled_200x235.png |> cp %f %o |> $(docset_docs)/logo.png {docset}
-
-
 !fill-ramda-version = |> ^o fill Ramda version^ sed 's|{{ramda_version}}|$(version)|' %f > %o |>
     info_plist_path = Contents/Info.plist
     : templates/$(info_plist_path) |> !fill-ramda-version |> $(docset)/$(info_plist_path) {docset}

@@ -1,5 +1,0 @@
-#! /bin/sh -e
-for subpath in "$@"; do
-    echo ": \$(website_docs)/$subpath |> cp %f %o |> \$(docset_docs)/$subpath {docset}"
-done
-

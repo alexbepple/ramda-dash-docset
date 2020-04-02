@@ -1,3 +1,4 @@
+version = 0.27.0
 
 .DEFAULT_GOAL = build_in_builder
 
@@ -58,9 +59,22 @@ update_published_docs:
 _tup:
 	tup
 
+all_original_docs := vendor/ramda.github.io
+original_docs = $(all_original_docs)/$(version)
+
+docset = $(build_dir)/Ramda.docset
+docset_docs = $(docset)/Contents/Resources/Documents
+
 _copy_resources:
-	mkdir -p $(build_dir)/Ramda.docset
-	cp -R static/* $(build_dir)/Ramda.docset
+	mkdir -p $(docset)
+	cp -R static/* $(docset)
+
+	mkdir -p $(docset_docs)
+	cp $(all_original_docs)/ramdaFilled_200x235.png $(docset_docs)/logo.png
+	cp $(original_docs)/style.css $(docset_docs)
+
+	mkdir -p $(docset_docs)/docs/dist
+	cp $(original_docs)/docs/dist/ramda.js $(docset_docs)/docs/dist/ramda.js
 
 # cp. https://github.com/source-foundry/Hack/issues/401#issuecomment-397102332
 SOURCE_DATE_EPOCH := $(shell git show -s --format=%ct HEAD)
