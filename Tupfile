@@ -22,16 +22,3 @@ website_docs = $(all_docs)/$(version)
 
 !generate-index = |> ^o generate index^ $(lsc) $(lib)/generate-index %o %f |> $(docset)/Contents/Resources/docSet.dsidx
     : $(api_page) |> !generate-index |> {docset}
-
-!generate-main-js = |> ^o generate main.js^ sed -e "s/location.origin/'http:\/\/ramdajs.com'/g" %f > %o |>
-    main_js_subpath = docs/main.js
-    : $(website_docs)/$(main_js_subpath) |> !generate-main-js |> $(docset_docs)/$(main_js_subpath)
-
-!fill-ramda-version = |> ^o fill Ramda version^ sed 's|{{ramda_version}}|$(version)|' %f > %o |>
-    info_plist_path = Contents/Info.plist
-    : templates/$(info_plist_path) |> !fill-ramda-version |> $(docset)/$(info_plist_path) {docset}
-
-
-!run-tests = |> ^ run tests^ DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter |>
-    : {docset} |> !run-tests |>
-

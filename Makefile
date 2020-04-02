@@ -59,6 +59,10 @@ update_published_docs:
 _tup:
 	tup
 
+bin := ./node_modules/.bin
+lsc = $(bin)/lsc
+lib = lib
+
 all_original_docs := vendor/ramda.github.io
 original_docs = $(all_original_docs)/$(version)
 
@@ -76,9 +80,18 @@ _copy_resources:
 	mkdir -p $(docset_docs)/docs/dist
 	cp $(original_docs)/docs/dist/ramda.js $(docset_docs)/docs/dist/ramda.js
 
+info_plist_path := Contents/Info.plist
+_create_info_plist:
+	sed 's|{{ramda_version}}|$(version)|' templates/$(info_plist_path) > $(docset)/$(info_plist_path)
+
+main_js_path := docs/main.js
+_create_main_js:
+	sed -e "s/location.origin/'http:\/\/ramdajs.com'/g" $(original_docs)/$(main_js_path) > $(docset_docs)/$(main_js_path)
+
+_compile: _create_info_plist _create_main_js
+
 # cp. https://github.com/source-foundry/Hack/issues/401#issuecomment-397102332
 SOURCE_DATE_EPOCH := $(shell git show -s --format=%ct HEAD)
-
 _archive:
 	# make it reproducible, cp. https://reproducible-builds.org/docs/archives/
 	cd $(build_dir) && GZIP=-n tar --sort=name \
@@ -87,7 +100,11 @@ _archive:
       --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
 	  -czf Ramda.tgz Ramda.docset
 
-build: _copy_resources _tup
+_test:
+	DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter
+
+build: _copy_resources _tup _compile
+	$(MAKE) _test
 	$(MAKE) _archive
 
 cmd = tup
