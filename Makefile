@@ -84,7 +84,7 @@ api_page := $(docset_docs)/$(api_page_subpath)
 _create_api_page:
 	$(lsc) $(lib)/generate-api-page $(original_docs)/$(api_page_subpath) $(api_page)
 _create_index: _create_api_page
-	$(lsc) $(lib)/generate-index $(docset)/Contents/Resources/docSet.dsidx $(api_page)
+	$(lsc) $(lib)/generate-index $(api_page) $(docset)/Contents/Resources/docSet.dsidx
 
 _compile: _create_info_plist _create_main_js _create_homepage _create_index _create_api_page
 

@@ -51,7 +51,7 @@ writeCategoryNamesToIndex = (categoriesWithFirstFunction, db) ->
         stmt.run category, 'docs/index.html#'+firstFunction
 
 
-[indexPath, apiPagePath] = process.argv[2, 3]
+[apiPagePath, indexPath] = process.argv[2, 3]
 createIndex = r.always createIndexAt(indexPath)
 getHtml = r.always readFile apiPagePath
 
