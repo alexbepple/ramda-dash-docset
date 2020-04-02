@@ -79,12 +79,12 @@ _create_main_js:
 _create_homepage:
 	$(lsc) $(lib)/generate-homepage $(original_docs)/index.html $(docset_docs)/index.html
 
-api_page_subpath := docs/index.html
-api_page := $(docset_docs)/$(api_page_subpath)
+api_page_path := docs/index.html
+docset_api_page := $(docset_docs)/$(api_page_path)
 _create_api_page:
-	$(lsc) $(lib)/generate-api-page $(original_docs)/$(api_page_subpath) $(api_page)
+	$(lsc) $(lib)/generate-api-page $(original_docs)/$(api_page_path) $(docset_api_page)
 _create_index: _create_api_page
-	$(lsc) $(lib)/generate-index $(api_page) $(docset)/Contents/Resources/docSet.dsidx
+	$(lsc) $(lib)/generate-index $(docset_api_page) $(docset)/Contents/Resources/docSet.dsidx
 
 _compile: _create_info_plist _create_main_js _create_homepage _create_index _create_api_page
 
