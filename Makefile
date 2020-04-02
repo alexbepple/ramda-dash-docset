@@ -56,8 +56,6 @@ update_published_docs:
 	git checkout master
 	git pull
 
-_tup:
-	tup
 
 bin := ./node_modules/.bin
 lsc = $(bin)/lsc
@@ -91,7 +89,14 @@ _create_main_js:
 _create_homepage:
 	$(lsc) $(lib)/generate-homepage $(original_docs)/index.html $(docset_docs)/index.html
 
-_compile: _create_info_plist _create_main_js _create_homepage
+api_page_subpath := docs/index.html
+api_page := $(docset_docs)/$(api_page_subpath)
+_create_api_page:
+	$(lsc) $(lib)/generate-api-page $(original_docs)/$(api_page_subpath) $(api_page)
+_create_index: _create_api_page
+	$(lsc) $(lib)/generate-index $(docset)/Contents/Resources/docSet.dsidx $(api_page)
+
+_compile: _create_info_plist _create_main_js _create_homepage _create_index _create_api_page
 
 # cp. https://github.com/source-foundry/Hack/issues/401#issuecomment-397102332
 SOURCE_DATE_EPOCH := $(shell git show -s --format=%ct HEAD)
@@ -106,7 +111,7 @@ _archive:
 _test:
 	DOCSET_PATH=$(docset) $(bin)/mocha --compilers ls:LiveScript --recursive check --reporter mocha-unfunk-reporter
 
-build: _copy_resources _tup _compile
+build: _copy_resources _compile
 	$(MAKE) _test
 	$(MAKE) _archive
 
