@@ -55,13 +55,25 @@ update_published_docs:
 	git checkout master
 	git pull
 
-_archive:
-	# GZIP=-n and --sort=name seem to make it reproducible in this case
-	# but may not be enough, cp. https://reproducible-builds.org/docs/archives/
-	cd $(build_dir) && GZIP=-n tar --sort=name -czf Ramda.tgz Ramda.docset
-
-build:
+_tup:
 	tup
+
+_copy_resources:
+	mkdir -p $(build_dir)/Ramda.docset
+	cp -R static/* $(build_dir)/Ramda.docset
+
+# cp. https://github.com/source-foundry/Hack/issues/401#issuecomment-397102332
+SOURCE_DATE_EPOCH := $(shell git show -s --format=%ct HEAD)
+
+_archive:
+	# make it reproducible, cp. https://reproducible-builds.org/docs/archives/
+	cd $(build_dir) && GZIP=-n tar --sort=name \
+      --mtime="@${SOURCE_DATE_EPOCH}" \
+      --owner=0 --group=0 --numeric-owner \
+      --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
+	  -czf Ramda.tgz Ramda.docset
+
+build: _copy_resources _tup
 	$(MAKE) _archive
 
 cmd = tup

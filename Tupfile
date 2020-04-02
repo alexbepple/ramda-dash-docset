@@ -27,12 +27,6 @@ website_docs = $(all_docs)/$(version)
     main_js_subpath = docs/main.js
     : $(website_docs)/$(main_js_subpath) |> !generate-main-js |> $(docset_docs)/$(main_js_subpath)
 
-
-# copy static assets from repo
-    preload static static/Contents
-    run ./copy_recursively static $(docset)
-
-
 # copy downloaded assets
     assets = style.css docs/dist/ramda.js
     run ./copy_from_website_docs_to_docset $(assets)
