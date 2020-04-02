@@ -3,6 +3,4 @@
 vendor/
 node_modules/
 
-.tup/
 build-default/
-
