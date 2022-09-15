@@ -1,4 +1,4 @@
-version = 0.27.0
+version = 0.28.0
 
 .DEFAULT_GOAL = clean_build_in_builder
 
@@ -54,7 +54,7 @@ lsc = $(bin)/lsc
 lib = lib
 
 all_original_docs := vendor/ramda.github.io
-original_docs = $(all_original_docs)/$(version)
+original_docs = $(all_original_docs)
 
 docset_docs = $(docset)/Contents/Resources/Documents
 
